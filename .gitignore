@@ -186,3 +186,6 @@ cython_debug/
 *.myd
 *.myi
 *.ibbackup
+
+# venv
+venv
