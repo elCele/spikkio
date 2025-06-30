@@ -1,5 +1,4 @@
 import streamlit as st
-import mysql.connector
 from sqlalchemy import create_engine
 
 def log_out():
