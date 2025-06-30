@@ -189,6 +189,7 @@ cython_debug/
 
 # venv
 venv
+start_venv.bat
 
 # .streamlit
 .streamlit
