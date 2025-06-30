@@ -1,12 +1,13 @@
 import streamlit as st
-import utils as u
+import utils.functions as f
+import utils.consts as c
 import pandas as pd
 import datetime
 from sqlalchemy import text
 
-u.initialize_var()
+f.initialize_var()
 
-u.config_sidebar()
+f.config_sidebar()
 
 st.set_page_config(
         page_title = st.session_state.current_page,
@@ -109,7 +110,7 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
             input_città_IA = st.text_input(label = "Città*", max_chars = 60)
 
         with c3:
-            input_provincia_IA = st.selectbox(label = "Provincia*", options = u.province_sigle)
+            input_provincia_IA = st.selectbox(label = "Provincia*", options = c.province_sigle)
 
         with c4:
             input_CAP_IA = st.text_input(label = "CAP*", max_chars = 5, placeholder = "00000")
@@ -224,7 +225,7 @@ if st.session_state.current_page == "Visualizza soci":                          
                 filter_città_VS = st.text_input(label = "Città")
 
             with c3:
-                filter_provincia_VS = st.selectbox(label = "Provincia", options = u.province_sigle)
+                filter_provincia_VS = st.selectbox(label = "Provincia", options = c.province_sigle)
 
             with c4:
                 filter_CAP_VS = st.text_input(label = "CAP", placeholder = "00000")
