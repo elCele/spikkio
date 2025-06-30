@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_modal import Modal
 import utils as u
 import pandas as pd
 import datetime
