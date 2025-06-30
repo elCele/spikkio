@@ -22,23 +22,25 @@ def config_sidebar():
         with st.sidebar.expander(label = "Anagrafiche", icon = "👥"):
             st.button(label = "Inserisci anagrafica", use_container_width = True, icon = "➕", on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"))
             st.button(label = "Visualizza soci", use_container_width = True, icon = "🔍", on_click = lambda: st.session_state.update(current_page = "Visualizza soci"))
+            st.button(label = "Tesseramento", use_container_width = True, icon = "🪪", on_click = lambda: st.session_state.update(current_page = "Tesseramento"))
 
         with st.sidebar.expander(label = "Tessere", icon = "🪪"):
-            st.button(label = "Visualizza tessere", use_container_width = True, icon = "🔍")
             st.button(label = "Inserisci tipo tessera", use_container_width = True, icon = "➕")
+            st.button(label = "Visualizza tessere", use_container_width = True, icon = "🔍")
             st.write("")    # spacing
-            st.button(label = "Visualizza qualifiche", use_container_width = True, icon = "🔍")
+        
             st.button(label = "Inserisci tipo qualifica", use_container_width = True, icon = "➕")
+            st.button(label = "Visualizza qualifiche", use_container_width = True, icon = "🔍")
 
         with st.sidebar.expander(label = "Direttivo", icon = "📄"):
+            st.button(label = "Programma riunione direttivo", use_container_width = True, icon = "➕")
             st.button(label = "Visualizza riunioni direttivo", use_container_width = True, icon = "🔍")
             st.button(label = "Inserisci presenze direttivo", use_container_width = True, icon = "📝")
-            st.button(label = "Programma riunione direttivo", use_container_width = True, icon = "➕")
 
         with st.sidebar.expander(label = "Assemblea", icon = "📣"):
+            st.button(label = "Programma riunione assemblea", use_container_width = True, icon = "➕")
             st.button(label = "Visualizza riunioni assemblea", use_container_width = True, icon = "🔍")
             st.button(label = "Inserisci presenze assemblea", use_container_width = True, icon = "📝")
-            st.button(label = "Programma riunione assemblea", use_container_width = True, icon = "➕")
 
         with st.sidebar.expander(label = "Enti", icon = "🏢"):
             st.button(label = "Inserisci ente", use_container_width = True, icon = "➕")
@@ -70,11 +72,13 @@ province_sigle = [
     "VI", "VT"
 ]
 
+db_username = st.secrets["DB_USERNAME"]
+
 ss_variables = {
     "current_page": "Log in",
     "logged": False,
     "user": "",
-    "conn": create_engine(f"mysql+mysqlconnector://root:@localhost/SPIKKIO")
+    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO")
 }
 
 def initialize_var():
