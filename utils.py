@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_extras as ste
 
 def config_sidebar():
     st.sidebar.image(image = "./img/SPIKKIO_gestionale.png")
