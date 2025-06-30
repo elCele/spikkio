@@ -10,12 +10,12 @@ def config_sidebar():
     st.sidebar.image(image = "./img/SPIKKIO_gestionale.png")
 
     st.sidebar.write("")    # spacing
-    st.sidebar.write("")
-    st.sidebar.write("")
 
     if st.session_state.logged:
 
-        st.sidebar.header(f":red[User:] {st.session_state.user}", divider = "red")
+        st.sidebar.subheader(f":red[User:] {st.session_state.user}")
+        st.sidebar.subheader(f":red[Qualifica:] ")
+        st.sidebar.subheader(f":red[Ruolo:] {st.session_state.role}", divider = "red")
 
         st.sidebar.button(label = "Homepage", use_container_width = True, icon = "🏠", on_click = lambda: st.session_state.update(current_page = "Homepage"))
 
@@ -23,12 +23,10 @@ def config_sidebar():
             st.button(label = "Inserisci anagrafica", use_container_width = True, icon = "➕", on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"))
             st.button(label = "Visualizza soci", use_container_width = True, icon = "🔍", on_click = lambda: st.session_state.update(current_page = "Visualizza soci"))
             st.button(label = "Tesseramento", use_container_width = True, icon = "🪪", on_click = lambda: st.session_state.update(current_page = "Tesseramento"))
+            st.button(label = "Visualizza tesserati", use_container_width = True, icon = "🔍")
 
         with st.sidebar.expander(label = "Tessere", icon = "🪪"):
             st.button(label = "Inserisci tipo tessera", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza tessere", use_container_width = True, icon = "🔍")
-            st.write("")    # spacing
-        
             st.button(label = "Inserisci tipo qualifica", use_container_width = True, icon = "➕")
             st.button(label = "Visualizza qualifiche", use_container_width = True, icon = "🔍")
 
@@ -45,7 +43,6 @@ def config_sidebar():
         with st.sidebar.expander(label = "Enti", icon = "🏢"):
             st.button(label = "Inserisci ente", use_container_width = True, icon = "➕")
             st.button(label = "Visualizza enti", use_container_width = True, icon = "🔍")
-            st.write("")
             st.button(label = "Inserisci affiliazione", use_container_width = True, icon = "➕")
             st.button(label = "Visualizza affiliazioni", use_container_width = True, icon = "🔍")
 
@@ -60,7 +57,7 @@ def config_sidebar():
         st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
 
 province_sigle = [
-    "AG", "AL", "AN", "AO", "AR", "AP", "AT", "AV", "BA", "BT", "BL", "BN",
+    "", "AG", "AL", "AN", "AO", "AR", "AP", "AT", "AV", "BA", "BT", "BL", "BN",
     "BG", "BI", "BO", "BZ", "BS", "BR", "CA", "CL", "CB", "CI", "CE", "CT",
     "CZ", "CH", "CO", "CS", "CR", "KR", "CN", "EN", "FM", "FE", "FI", "FG",
     "FC", "FR", "GE", "GO", "GR", "IM", "IS", "SP", "AQ", "LT", "LE", "LC",
@@ -78,7 +75,8 @@ ss_variables = {
     "current_page": "Log in",
     "logged": False,
     "user": "",
-    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO")
+    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO"),
+    "role": ""
 }
 
 def initialize_var():
