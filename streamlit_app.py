@@ -17,6 +17,8 @@ st.set_page_config(
     )
 
 # ------------------------ Log in page ------------------------
+    # Pagina iniziale dove viene richiesto il log in.
+    # Bisogna capire come gestire vari utenti
 
 if st.session_state.current_page == "Log in":
     st.title("🔑 Login")
@@ -37,14 +39,14 @@ if st.session_state.current_page == "Log in":
 # ------------------------ Homepage page ------------------------
     # Homepage del gestionale di spikkio, non so cosa ci andrà dentro
 
-if st.session_state.current_page == "Homepage":         # to do
+if st.session_state.current_page == "Homepage":                                                                        # to do
     st.title("🍋 SPIKKIO")
 
 # ------------------------ Inserisci anagrafica page ------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
     # necessari, con tanto di controlli su ogni campo
 
-if st.session_state.current_page == "Inserisci anagrafica":         # complete
+if st.session_state.current_page == "Inserisci anagrafica":                                                            # complete
     st.title("➕ Inserisci anagrafica")
     
     with st.form(key = "form_inserisci_anagrafica", clear_on_submit = True, enter_to_submit = False):
@@ -157,7 +159,7 @@ if st.session_state.current_page == "Inserisci anagrafica":         # complete
     # Pagina per la visualizzazione del contenuto della tabella TBL_ANAGRAFICHE.
     # Sono ancora da stabilire tutte le varie viste
 
-if st.session_state.current_page == "Visualizza soci":          # to do
+if st.session_state.current_page == "Visualizza soci":                                                                 # to do
     st.title("🔍 Visualizza soci")
 
     df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
@@ -167,35 +169,85 @@ if st.session_state.current_page == "Visualizza soci":          # to do
     # Pagina per il tesseramento di un socio.
     # Ancora da allestire
 
-if st.session_state.current_page == "Tesseramento":         # to do
+if st.session_state.current_page == "Tesseramento":                                                                    # to do
     st.title("🪪 Tesseramento")
 
-# ------------------------  ------------------------
+# ------------------------ Inserisci tipo tessera page ------------------------
 
+if st.session_state.current_page == "Inserisci tipo tessera":                                                          # to do
+    pass
 
+# ------------------------ Visualizza tessere page ------------------------
 
-# ------------------------  ------------------------
+if st.session_state.current_page == "Visualizza tessere":                                                              # to do
+    pass
 
+# ------------------------ Inserisci tipo qualifica page ------------------------
 
+if st.session_state.current_page == "Inserisci tipo qualifica":                                                        # to do
+    pass
 
-# ------------------------  ------------------------
+# ------------------------ Visualizza qualifiche page ------------------------
 
+if st.session_state.current_page == "Visualizza qualifiche":                                                           # to do
+    pass
 
+# ------------------------ Programma riunione direttivo page ------------------------
 
-# ------------------------  ------------------------
+if st.session_state.current_page == "Programma riunione direttivo":                                                    # to do
+    pass
 
+# ------------------------ Visualizza riunioni direttivo page ------------------------
 
+if st.session_state.current_page == "Visualizza riunioni direttivo":                                                   # to do
+    pass
 
-# ------------------------  ------------------------
+# ------------------------ Inserisci presenze direttivo ------------------------
 
+if st.session_state.current_page == "Inserisci presenze direttivo":                                                    # to do
+    pass
 
+# ------------------------ Programma riunioni assemblea page ------------------------
 
-# ------------------------  ------------------------
+if st.session_state.current_page == "Programma riunione assemblea":                                                    # to do
+    pass
 
+# ------------------------ Visualizza riunioni assemblea page ------------------------
 
+if st.session_state.current_page == "Visualizza riunioni assemblea":                                                   # to do
+    pass
 
-# ------------------------  ------------------------
+# ------------------------ Inserisci ente page ------------------------
 
+if st.session_state.current_page == "Inserisci ente":                                                                  # to do
+    pass
 
+# ------------------------ Visualizza enti ------------------------
 
-# ------------------------  ------------------------
+if st.session_state.current_page == "Visualizza enti":                                                                 # to do
+    pass
+
+# ------------------------ Inserisci affiliazione page ------------------------
+
+if st.session_state.current_page == "Inserisci affiliazione":                                                          # to do
+    pass
+
+# ------------------------ Visualizza affiliazione page ------------------------
+
+if st.session_state.current_page == "Visualizza affiliazione":                                                         # to do
+    pass
+
+# ------------------------ Programma attività page ------------------------
+
+if st.session_state.current_page == "Programma attività":                                                              # to do
+    pass
+
+# ------------------------ Visualizza attività page ------------------------
+
+if st.session_state.current_page == "Visualizza attività":                                                             # to do
+    pass
+
+# ------------------------ Gestisci prenotazioni attività page ------------------------
+
+if st.session_state.current_page == "Gestisci prenotazioni attività":                                                  # to do
+    pass
