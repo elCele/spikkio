@@ -189,3 +189,6 @@ cython_debug/
 
 # venv
 venv
+
+# .streamlit
+.streamlit
