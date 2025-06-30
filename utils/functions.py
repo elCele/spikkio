@@ -1,6 +1,8 @@
 import streamlit as st
 from sqlalchemy import create_engine
 
+# ------------------------ Inizializzazione variabili di stato ------------------------
+
 db_username = st.secrets["DB_USERNAME"]
 
 ss_variables = {
@@ -16,10 +18,15 @@ def initialize_var():
         if var not in st.session_state:
             st.session_state[var] = ss_variables[var]
 
+# ------------------------ Log out ------------------------
+
 def log_out():
     st.session_state.user = ""
     st.session_state.logged = False
     st.session_state.current_page = "Log in"
+
+# ------------------------ Gestione della navigazione ------------------------
+    # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine
 
 def config_sidebar():
     st.sidebar.image(image = "./img/SPIKKIO_gestionale.png")

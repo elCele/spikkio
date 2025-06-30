@@ -1,3 +1,5 @@
+# ------------------------ Lista delle province italiane ------------------------
+
 province_sigle = [
     "", "AG", "AL", "AN", "AO", "AR", "AP", "AT", "AV", "BA", "BT", "BL", "BN",
     "BG", "BI", "BO", "BZ", "BS", "BR", "CA", "CL", "CB", "CI", "CE", "CT",
