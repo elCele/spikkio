@@ -1,4 +1,11 @@
 import streamlit as st
+import mysql.connector
+from sqlalchemy import create_engine
+
+def log_out():
+    st.session_state.user = ""
+    st.session_state.logged = False
+    st.session_state.current_page = "Log in"
 
 def config_sidebar():
     st.sidebar.image(image = "./img/SPIKKIO_gestionale.png")
@@ -9,11 +16,13 @@ def config_sidebar():
 
     if st.session_state.logged:
 
+        st.sidebar.header(f":red[User:] {st.session_state.user}", divider = "red")
+
         st.sidebar.button(label = "Homepage", use_container_width = True, icon = "🏠", on_click = lambda: st.session_state.update(current_page = "Homepage"))
 
         with st.sidebar.expander(label = "Anagrafiche", icon = "👥"):
             st.button(label = "Inserisci anagrafica", use_container_width = True, icon = "➕", on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"))
-            st.button(label = "Visualizza soci", use_container_width = True, icon = "🔍")
+            st.button(label = "Visualizza soci", use_container_width = True, icon = "🔍", on_click = lambda: st.session_state.update(current_page = "Visualizza soci"))
 
         with st.sidebar.expander(label = "Tessere", icon = "🪪"):
             st.button(label = "Visualizza tessere", use_container_width = True, icon = "🔍")
@@ -44,6 +53,8 @@ def config_sidebar():
             st.button(label = "Visualizza attività", use_container_width = True, icon = "🔍")
             st.button(label = "Gestisci prenotazioni attività", use_container_width = True, icon = "📝")
 
+        st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
+
     else:
         st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
 
@@ -60,4 +71,14 @@ province_sigle = [
     "VI", "VT"
 ]
 
-    
+ss_variables = {
+    "current_page": "Log in",
+    "logged": False,
+    "user": "",
+    "conn": create_engine(f"mysql+mysqlconnector://root:@localhost/SPIKKIO")
+}
+
+def initialize_var():
+    for var in ss_variables:
+        if var not in st.session_state:
+            st.session_state[var] = ss_variables[var]
