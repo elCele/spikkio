@@ -94,7 +94,10 @@ if st.session_state.current_page == "Inserisci anagrafica":
 if st.session_state.current_page == "Visualizza soci":
     st.title("🔍 Visualizza soci")
 
-    df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.conn)
+    try:
+        df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.conn)
+    except Exception as e:
+        st.error("Problema di database, aggiustabile")
     st.dataframe(df)
 
 # ------------------------  ------------------------
