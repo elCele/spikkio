@@ -4,3 +4,6 @@ pandas
 SQLalchemy
 mysql-connector-python
 datetime
+bcrypt
+secure-smtplib
+email

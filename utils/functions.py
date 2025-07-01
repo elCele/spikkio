@@ -2,6 +2,9 @@ import streamlit as st
 from sqlalchemy import create_engine
 import bcrypt
 from sqlalchemy import text
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
@@ -108,3 +111,32 @@ def update_password(username, plain_password):
         conn.execute(query, {"hashed": hashed, "username": username})
         conn.commit()
 
+# ------------------------ Invio email ------------------------
+
+def send_email(subject, body, to_email, from_email, from_password, smtp_server = 'smtp.gmail.com', smtp_port = 587):
+    try:
+        # Crea il messaggio
+        msg = MIMEMultipart()
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg['Subject'] = subject
+
+        # Attacca il corpo del messaggio
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connessione al server SMTP
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Abilita la crittografia
+
+        # Login
+        server.login(from_email, from_password)
+
+        # Invia la mail
+        server.send_message(msg)
+
+        # Chiude la connessione
+        server.quit()
+
+        print(f"Email inviata correttamente a {to_email}")
+    except Exception as e:
+        print(f"Errore durante l'invio dell'email: {e}")
