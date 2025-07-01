@@ -7,3 +7,4 @@ datetime
 bcrypt
 secure-smtplib
 email
+password_strength
