@@ -8,6 +8,8 @@ import bcrypt
 
 f.initialize_var()
 
+f.config_sidebar()
+
 st.set_page_config(
         page_title = st.session_state.current_page,
         page_icon = "🍋",
@@ -18,7 +20,6 @@ st.set_page_config(
 # ------------------------ Log in page ------------------------
     # Pagina iniziale dove viene richiesto il log in.
 
-f.config_sidebar()
 if st.session_state.current_page == "Log in":
     utenti = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
 
@@ -41,7 +42,6 @@ if st.session_state.current_page == "Log in":
 
                 # Verifica la password (solo se è stata inserita)
                 if input_password_FL and bcrypt.checkpw(input_password_FL.encode('utf-8'), hashed_password.encode('utf-8')):
-                    st.session_state.logged = True
                     st.session_state.user = input_username_FL
 
                     for r in pd.read_sql(f"SELECT Ruolo FROM TBL_RUOLI WHERE Username = '{input_username_FL}'", st.session_state.engine)["Ruolo"]:
@@ -50,6 +50,7 @@ if st.session_state.current_page == "Log in":
                     if pd.isna(pd.read_sql(f"SELECT Ultimo_login FROM TBL_UTENTI WHERE Username = '{input_username_FL}'", st.session_state.engine)['Ultimo_login'].iloc[0]):
                         st.session_state.current_page = "Cambia credenziali"
                     else:
+                        st.session_state.logged = True
                         st.session_state.current_page = "Homepage"
 
                         with st.session_state.engine.connect() as conn:
@@ -69,6 +70,9 @@ if st.session_state.current_page == "Log in":
 
 if st.session_state.current_page == "Cambia credenziali":
     st.title("🔄️ Cambia credenziali")
+
+    if st.session_state.user == "master":
+        st.subheader(":red[ATTENZIONE: Continuare solo se si è sicuri di quelo che si sta facendo.]")
 
     with st.form("form_cambia_credenziali", enter_to_submit = True):
         input_username_CC = st.text_input(label = "Nuovo username")
@@ -120,6 +124,7 @@ if st.session_state.current_page == "Cambia credenziali":
                             conn.commit()
 
                 st.session_state.user = input_username_CC
+                st.session_state.logged = True
                 st.session_state.current_page = "Homepage"
                 st.rerun()
             else:
@@ -130,42 +135,15 @@ if st.session_state.current_page == "Cambia credenziali":
     # Grafico con anagrafiche/tesserati
     # Numero maschi, femmine, nd
 
-f.config_sidebar()
 if st.session_state.current_page == "Homepage":                                                                        # to do
     st.title("🍋 SPIKKIO")
 
-    df = pd.read_sql("SELECT Sesso FROM TBL_ANAGRAFICHE", st.session_state.engine)
-
-    m = 0
-    f = 0
-    nd = 0
-
-    for el in df['Sesso']:
-        if el == 'M':
-            m += 1
-
-        if el == 'F':
-            f += 1
-
-        if el == 'ND':
-            nd += 1
-
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        st.metric("Utenti maschi", m)
-
-    with c2:
-        st.metric("Utenti femmine", f)
-
-    with c3:
-        st.metric("Altro", nd)
+    st.subheader(f"Dipenderà dai tipi di ruolo che hai.\nOra sei {', '.join(st.session_state.role)}")
 
 # ------------------------ Inserisci anagrafica page ------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
     # necessari, con tanto di controlli su ogni campo
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci anagrafica":                                                            # complete
     st.title("➕ Inserisci anagrafica")
     
@@ -264,29 +242,42 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
 
             hashed_password = f.hash_password(input_CF_IA)
 
-            query = text("""
+            query1 = text("""
                 INSERT INTO TBL_UTENTI (Username, CF_socio, Password_hash, Ultimo_login)
-                VALUES (:username, :cf_socio, :password, :ultimo_login)
+                VALUES (:username, :cf_socio, :password, :ultimo_login);
             """)
 
-            params = {
+            query2 = text("""
+                INSERT INTO TBL_RUOLI (Username, Ruolo)
+                VALUES (:username, 'Utente standard');
+            """)
+
+            params1 = {
                 "username": f"{input_nome_IA}_{input_cognome_IA}",
                 "cf_socio": input_CF_IA,
                 "password": hashed_password,
-                "ultimo_login": None
+                "ultimo_login": None,
+                "username2": f"{input_nome_IA}_{input_cognome_IA}"
+            }
+
+            params2 = {
+                "username": f"{input_nome_IA}_{input_cognome_IA}",
             }
 
             with st.session_state.engine.connect() as conn:
-                conn.execute(query, params)
+                conn.execute(query1, params1)
+                conn.execute(query2, params2)
                 conn.commit()
 
             f.send_email(
                 "Registrazione a SPIKKIO!",
-                f"Benvenuto nella famiglia di SPIKKIO!\nEcco a te le tue credenziali:\n      Username: {input_nome_IA}_{input_cognome_IA}\n      Password: {input_CF_IA}",
+                f"Benvenuto nella famiglia di SPIKKIO!\n\nEcco a te le tue credenziali:\n\n       👤 Username: {input_nome_IA}_{input_cognome_IA}\n      ✳️ Password: {input_CF_IA}",
                 input_email_IA,
                 "mattia1052004@gmail.com",
                 st.secrets["EMAIL_PASSWORD"]
             )
+
+            st.success(f"Email con le credenziali inviata", icon = "✅")
 
             with st.container(border = True):
                 st.subheader("Si vuole tesserare il socio appena inserito?")
@@ -304,14 +295,18 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
     # Pulsanti per aggiornare.
     # Pulsante per scaricare .pdf
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza soci":                                                                 # to do
     st.title("🔍 Visualizza soci")
 
-    df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
+    if "master" in st.session_state.role:
+        df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
+    else:
+        df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE", st.session_state.engine)
+        df = df.drop(columns = ['Attivo'])
+
 
     with st.expander("Filtri", expanded = False):
-        with st.form(key = "form_visualizza_soci", clear_on_submit = True, enter_to_submit = False, border = False):
+        with st.form(key = "form_visualizza_soci", clear_on_submit = True, enter_to_submit = True, border = False):
             filter_CF_VS = st.text_input(label = "Codice fiscale", placeholder = "AAAAAA00A00A000A")
 
             c1, c2 = st.columns(2)
@@ -420,7 +415,7 @@ if st.session_state.current_page == "Visualizza soci":                          
 
         df = pd.read_sql(text(query), st.session_state.engine, params = params)
 
-    if st.session_state.user == "master":
+    if "master" in st.session_state.role:
         st.data_editor(df)
     else:
         st.dataframe(df)
@@ -428,102 +423,85 @@ if st.session_state.current_page == "Visualizza soci":                          
 # ------------------------ Tesseramento page ------------------------
     # Pagina per il tesseramento di un socio.
 
-f.config_sidebar()
 if st.session_state.current_page == "Tesseramento":                                                                    # to do
     st.title("🪪 Tesseramento")
 
 # ------------------------ Inserisci tipo tessera page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci tipo tessera":                                                          # to do
     pass
 
 # ------------------------ Visualizza tessere page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza tessere":                                                              # to do
     pass
 
 # ------------------------ Inserisci tipo qualifica page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci tipo qualifica":                                                        # to do
     pass
 
 # ------------------------ Visualizza qualifiche page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza qualifiche":                                                           # to do
     pass
 
 # ------------------------ Programma riunione direttivo page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Programma riunione direttivo":                                                    # to do
     pass
 
 # ------------------------ Visualizza riunioni direttivo page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza riunioni direttivo":                                                   # to do
     pass
 
 # ------------------------ Inserisci presenze direttivo ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci presenze direttivo":                                                    # to do
     pass
 
 # ------------------------ Programma riunioni assemblea page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Programma riunione assemblea":                                                    # to do
     pass
 
 # ------------------------ Visualizza riunioni assemblea page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza riunioni assemblea":                                                   # to do
     pass
 
 # ------------------------ Inserisci ente page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci ente":                                                                  # to do
     pass
 
 # ------------------------ Visualizza enti ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza enti":                                                                 # to do
     pass
 
 # ------------------------ Inserisci affiliazione page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Inserisci affiliazione":                                                          # to do
     pass
 
 # ------------------------ Visualizza affiliazione page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza affiliazione":                                                         # to do
     pass
 
 # ------------------------ Programma attività page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Programma attività":                                                              # to do
     pass
 
 # ------------------------ Visualizza attività page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Visualizza attività":                                                             # to do
     pass
 
 # ------------------------ Gestisci prenotazioni attività page ------------------------
 
-f.config_sidebar()
 if st.session_state.current_page == "Gestisci prenotazioni attività":                                                  # to do
     pass

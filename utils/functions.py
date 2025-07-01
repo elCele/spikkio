@@ -79,10 +79,16 @@ def config_sidebar():
             st.button(label = "Visualizza attività", use_container_width = True, icon = "🔍")
             st.button(label = "Gestisci prenotazioni attività", use_container_width = True, icon = "📝")
 
+        with st.sidebar.expander(label = "Profilo", icon = "👤"):
+            st.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️", on_click = lambda: st.session_state.update(current_page = "Cambia credenziali"))
+
         st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
 
     else:
-        st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
+        if st.session_state.current_page == "Log in":
+            st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
+        elif st.session_state.current_page == "Cambia credenziali":
+            st.sidebar.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️")
 
 # ------------------------ Crittazione delle password ------------------------
 
