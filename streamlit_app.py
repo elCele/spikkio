@@ -76,7 +76,7 @@ if st.session_state.current_page == "Cambia credenziali":
 
     with st.form("form_cambia_credenziali", enter_to_submit = True):
         input_username_CC = st.text_input(label = "Nuovo username")
-        input_newPassword_CC = st.text_input(label = "Nuova password", type = "password")
+        input_newPassword_CC = st.text_input(label = "Nuova password", type = "password", placeholder = "Requisiti: 8+ caratteri, maiuscola, minuscola, numero, simbolo")
         input_oldPassword_CC = st.text_input(label = "Vecchia password", type = "password")
 
         submitted = st.form_submit_button("Cambia credenziali")
@@ -92,43 +92,64 @@ if st.session_state.current_page == "Cambia credenziali":
         if df.empty:
             st.error("Utente non trovato", icon = "❌")
         else:
-            saved_hash = df.iloc[0]['Password_hash']
+            err = []
 
-            # Verifica che la vecchia password inserita sia corretta
-            if bcrypt.checkpw(input_oldPassword_CC.encode('utf-8'), saved_hash.encode('utf-8')):
-                # Crea hash della nuova password
-                new_hashed = f.hash_password(input_newPassword_CC)
+            if c.policy.test(input_newPassword_CC):
+                err.append("La password non rispetta i requisiti")
 
-                # Aggiorna il database: username + password
-                with st.session_state.engine.connect() as conn:
-                    conn.execute(
-                        text("""
-                            UPDATE TBL_UTENTI
-                            SET Username = :new_username,
-                                Password_hash = :new_password
-                            WHERE Username = :old_username
-                        """),
-                        {
-                            "new_username": input_username_CC,
-                            "new_password": new_hashed,
-                            "old_username": st.session_state.user
-                        }
-                    )
-                    conn.commit()
+            if input_username_CC == '':
+                err.append("Il campo username non può essere vuoto")
 
-                with st.session_state.engine.connect() as conn:
-                            conn.execute(
-                                text("UPDATE TBL_UTENTI SET Ultimo_login = CURRENT_TIMESTAMP WHERE Username = :username"),
-                                {"username": input_username_CC}
-                            )
-                            conn.commit()
+            query = '''SELECT Username
+                       FROM TBL_UTENTI
+                    '''
+            
+            search_username = pd.read_sql(query, st.session_state.engine)
+            
+            if not search_username[search_username['Username'] == input_username_CC].empty:
+                err.append("Esiste già un utente con questo username")
 
-                st.session_state.user = input_username_CC
-                st.session_state.logged = True
-                st.session_state.current_page = "Homepage"
-                st.rerun()
+            if err:
+                for e in err:
+                    st.error(e, icon = "❌")
             else:
-                st.error("Vecchia password errata", icon = "❌")
+                saved_hash = df.iloc[0]['Password_hash']
+
+                # Verifica che la vecchia password inserita sia corretta
+                if bcrypt.checkpw(input_oldPassword_CC.encode('utf-8'), saved_hash.encode('utf-8')):
+                    # Crea hash della nuova password
+                    new_hashed = f.hash_password(input_newPassword_CC)
+
+                    # Aggiorna il database: username + password
+                    with st.session_state.engine.connect() as conn:
+                        conn.execute(
+                            text("""
+                                UPDATE TBL_UTENTI
+                                SET Username = :new_username,
+                                    Password_hash = :new_password
+                                WHERE Username = :old_username
+                            """),
+                            {
+                                "new_username": input_username_CC,
+                                "new_password": new_hashed,
+                                "old_username": st.session_state.user
+                            }
+                        )
+                        conn.commit()
+
+                    with st.session_state.engine.connect() as conn:
+                                conn.execute(
+                                    text("UPDATE TBL_UTENTI SET Ultimo_login = CURRENT_TIMESTAMP WHERE Username = :username"),
+                                    {"username": input_username_CC}
+                                )
+                                conn.commit()
+
+                    st.session_state.user = input_username_CC
+                    st.session_state.logged = True
+                    st.session_state.current_page = "Homepage"
+                    st.rerun()
+                else:
+                    st.error("Vecchia password errata", icon = "❌")
 
 # ------------------------ Homepage page ------------------------
     # Homepage del gestionale di spikkio.

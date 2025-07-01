@@ -1,3 +1,5 @@
+from password_strength import PasswordPolicy
+
 # ------------------------ Lista delle province italiane ------------------------
 
 province_sigle = [
@@ -12,3 +14,7 @@ province_sigle = [
     "TO", "TP", "TN", "TV", "TS", "UD", "VA", "VE", "VB", "VC", "VR", "VV",
     "VI", "VT"
 ]
+
+# ------------------------ Policy password ------------------------
+
+policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special = 1)
