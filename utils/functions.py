@@ -1,16 +1,18 @@
 import streamlit as st
 from sqlalchemy import create_engine
+import bcrypt
+from sqlalchemy import text
 
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
 db_username = st.secrets["DB_USERNAME"]
 
 ss_variables = {
+    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO"),
     "current_page": "Log in",
     "logged": False,
     "user": "",
-    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO"),
-    "role": ""
+    "role": []
 }
 
 def initialize_var():
@@ -21,8 +23,9 @@ def initialize_var():
 # ------------------------ Log out ------------------------
 
 def log_out():
-    st.session_state.user = ""
     st.session_state.logged = False
+    st.session_state.user = ""
+    st.session_state.role = []
     st.session_state.current_page = "Log in"
 
 # ------------------------ Gestione della navigazione ------------------------
@@ -37,7 +40,7 @@ def config_sidebar():
 
         st.sidebar.subheader(f":red[User:] {st.session_state.user}")
         st.sidebar.subheader(f":red[Qualifica:] ")
-        st.sidebar.subheader(f":red[Ruolo:] {st.session_state.role}", divider = "red")
+        st.sidebar.subheader(f":red[Ruolo:] {', '.join(st.session_state.role)}", divider = "red")
 
         st.sidebar.button(label = "Homepage", use_container_width = True, icon = "🏠", on_click = lambda: st.session_state.update(current_page = "Homepage"))
 
@@ -77,3 +80,31 @@ def config_sidebar():
 
     else:
         st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
+
+# ------------------------ Crittazione delle password ------------------------
+
+def hash_password(password):
+    # Genera un salt (valore casuale che rende ogni hash unico)
+    salt = bcrypt.gensalt()
+    # Calcola l'hash
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    # Ritorna l'hash come stringa decodificata
+    return hashed.decode('utf-8')
+
+# ------------------------ Update dello username ------------------------
+
+def update_username(old_username, new_username):
+    query = text("UPDATE TBL_UTENTI SET Username = :new_username WHERE Username = :old_username")
+    with st.session_state.engine.connect() as conn:
+        conn.execute(query, {"new_username": new_username, "old_username": old_username})
+        conn.commit()
+
+# ------------------------ Update della password ------------------------
+
+def update_password(username, plain_password):
+    hashed = hash_password(plain_password)
+    query = text("UPDATE TBL_UTENTI SET Password = :hashed WHERE Username = :username")
+    with st.session_state.engine.connect() as conn:
+        conn.execute(query, {"hashed": hashed, "username": username})
+        conn.commit()
+

@@ -4,6 +4,7 @@ import utils.consts as c
 import pandas as pd
 import datetime
 from sqlalchemy import text
+import bcrypt
 
 f.initialize_var()
 
@@ -18,9 +19,10 @@ st.set_page_config(
 
 # ------------------------ Log in page ------------------------
     # Pagina iniziale dove viene richiesto il log in.
-    # Bisogna capire come gestire vari utenti
 
 if st.session_state.current_page == "Log in":
+    utenti = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
+
     st.title("🔑 Login")
 
     with st.form(key = "form_login", clear_on_submit = True, enter_to_submit = True):
@@ -30,12 +32,30 @@ if st.session_state.current_page == "Log in":
         submitted = st.form_submit_button(label = "Submit", use_container_width = True)
 
         if submitted:
-            if input_username_FL == st.secrets["ROOT_USERNAME"] and input_password_FL == st.secrets["ROOT_PASSWORD"]:
-                st.session_state.user = "root"
-                st.session_state.logged = True
-                st.session_state.current_page = "Homepage"
-                st.session_state.role = "master"
-                st.rerun()
+            user_row = utenti[utenti['Username'] == input_username_FL]
+
+            if user_row.empty:
+                st.error("Utente non trovato", icon = "❌")
+            else:
+                # Prendi l'hash salvato nel DB
+                hashed_password = user_row.iloc[0]['Password_hash'].strip()
+
+                # Verifica la password (solo se è stata inserita)
+                if input_password_FL and bcrypt.checkpw(input_password_FL.encode('utf-8'), hashed_password.encode('utf-8')):
+                    st.session_state.logged = True
+                    st.session_state.user = input_username_FL
+
+                    for r in pd.read_sql(f"SELECT Ruolo FROM TBL_RUOLI WHERE Username = '{input_username_FL}'", st.session_state.engine)["Ruolo"]:
+                        st.session_state.role.append(r)
+
+                    st.session_state.current_page = "Homepage"
+                    st.rerun()
+                else:
+                    st.error("Password errata", icon = "❌")
+    
+
+# ------------------------ Sign in page ------------------------
+    # Pagina per l'inserimento di un nuovo utente.
 
 # ------------------------ Homepage page ------------------------
     # Homepage del gestionale di spikkio.
@@ -303,7 +323,7 @@ if st.session_state.current_page == "Visualizza soci":                          
 
         df = pd.read_sql(text(query), st.session_state.engine, params = params)
 
-    if st.session_state.user == "root":
+    if st.session_state.user == "master":
         st.data_editor(df)
     else:
         st.dataframe(df)
