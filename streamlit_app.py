@@ -37,6 +37,8 @@ if st.session_state.current_page == "Log in":
             if user_row.empty:
                 st.error("Utente non trovato", icon = "❌")
             else:
+                st.session_state.CF_socio = user_row.iloc[0]['CF_socio']
+
                 # Prendi l'hash salvato nel DB
                 hashed_password = user_row.iloc[0]['Password_hash'].strip()
 
@@ -51,7 +53,7 @@ if st.session_state.current_page == "Log in":
                         st.session_state.current_page = "Cambia credenziali"
                     else:
                         st.session_state.logged = True
-                        st.session_state.current_page = "Homepage"
+                        st.session_state.current_page = "Bacheca"
 
                         with st.session_state.engine.connect() as conn:
                             conn.execute(
@@ -113,6 +115,8 @@ if st.session_state.current_page == "Cambia credenziali":
                 for e in err:
                     st.error(e, icon = "❌")
             else:
+                st.session_state.CF_socio = input_username_CC
+
                 saved_hash = df.iloc[0]['Password_hash']
 
                 # Verifica che la vecchia password inserita sia corretta
@@ -146,7 +150,7 @@ if st.session_state.current_page == "Cambia credenziali":
 
                     st.session_state.user = input_username_CC
                     st.session_state.logged = True
-                    st.session_state.current_page = "Homepage"
+                    st.session_state.current_page = "Bacheca"
                     st.rerun()
                 else:
                     st.error("Vecchia password errata", icon = "❌")
