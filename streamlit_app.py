@@ -185,6 +185,14 @@ if st.session_state.current_page == "Bacheca":                                  
                 st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}")
                 st.write(c['Testo'])
 
+                if c['Allegato'] is not None and not pd.isna(c['Allegato']) and len(c['Allegato']) > 0:   # CAMBIARE ASSOLUTAMENTE LA GESTIONE DEI DOWNLOAD
+                    st.download_button(
+                        label = "Scarica allegato",
+                        data = c['Allegato'],
+                        file_name = f"{c['ID_comunicazione']}_allegato.{c['Estensione_allegato']}",
+                        mime = "application/octet-stream"
+                    )
+
 # ------------------------ Inserisci anagrafica page ------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
     # necessari, con tanto di controlli su ogni campo
