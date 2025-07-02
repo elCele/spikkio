@@ -69,7 +69,9 @@ def config_sidebar():
 
                 st.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️", on_click = lambda: st.session_state.update(current_page = "Cambia credenziali"))
         else:
-            st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
+            pass
+
+        st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
 
         '''st.sidebar.button(label = "Homepage", use_container_width = True, icon = "🏠", on_click = lambda: st.session_state.update(current_page = "Homepage"))
 
