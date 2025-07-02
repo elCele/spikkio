@@ -8,3 +8,4 @@ bcrypt
 secure-smtplib
 email
 password_strength
+python-magic

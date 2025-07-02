@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
+import utils.consts as c
 import bcrypt
 from sqlalchemy import text
 import smtplib
@@ -16,7 +17,7 @@ ss_variables = {
     "current_page": "Log in",
     "logged": False,
     "user": "",
-    "role": [],
+    "role": "",
     "CF_socio": ""
 }
 
@@ -28,10 +29,7 @@ def initialize_var():
 # ------------------------ Log out ------------------------
 
 def log_out():
-    st.session_state.logged = False
-    st.session_state.user = ""
-    st.session_state.role = []
-    st.session_state.current_page = "Log in"
+    initialize_var()
 
 # ------------------------ Gestione della navigazione ------------------------
     # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine
@@ -45,78 +43,17 @@ def config_sidebar():
 
         st.sidebar.subheader(f":red[User:] {st.session_state.user}")
         st.sidebar.subheader(f":red[Qualifica:] ")
-        st.sidebar.subheader(f":red[Ruolo:] {', '.join(st.session_state.role)}", divider = "red")
+        st.sidebar.subheader(f":red[Ruolo:] {st.session_state.role}", divider = "red")
 
-        if 'Utente standard' in st.session_state.role:
-            st.sidebar.button(label = "Bacheca", use_container_width = True, icon = "📌", on_click = lambda: st.session_state.update(current_page = "Bacheca"))
-            
-            st.sidebar.button(label = "Visualizza attività", use_container_width = True, icon = "📅", on_click = lambda: st.session_state.update(current_page = "Visualizza attività"))
-
-            st.sidebar.button(label = "Visualizza convocazioni", use_container_width = True, icon = "📣", on_click = lambda: st.session_state.update(current_page = "Visualizza convocazione"))
-
-            with st.sidebar.expander(label = "Profilo", icon = "👤"):
-                st.button(label = "Visualizza contributi", use_container_width = True, icon = "📊", on_click = lambda: st.session_state.update(current_page = "Visualizza contributi"))
-
-                if not pd.read_sql(f"SELECT * FROM TBL_TESSERE WHERE CF_socio = '{st.session_state.CF_socio}'", st.session_state.engine).empty:
-                    st.button(label = "Visualizza tessera", use_container_width = True, icon = "🪪", on_click = lambda: st.session_state.update(current_page = "Visualizza tessera"))
-
-                if not 1:           # aggiungere la tabella team per gestire la query
-                    st.button(label = "Visualizza team", use_container_width = True, icon = "👥", on_click = lambda: st.session_state.update(current_page = "Visualizza team"))
-
-                st.button(label = "Effettua segnalazione", use_container_width = True, icon = "📢", on_click = lambda: st.session_state.update(current_page = "Effettua segnalazione"))
-
-                st.button(label = "Visualizza segnalazioni", use_container_width = True, icon = "🔍", on_click = lambda: st.session_state.update(current_page = "Visualizza segnalazioni"))
-
-                st.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️", on_click = lambda: st.session_state.update(current_page = "Cambia credenziali"))
+        if st.session_state.role in c.users:
+            pagine_per_utente = c.users[st.session_state.role]
         else:
-            pass
+            pagine_per_utente = []
+
+        for voce in pagine_per_utente:
+            voce.build()
 
         st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
-
-        '''st.sidebar.button(label = "Homepage", use_container_width = True, icon = "🏠", on_click = lambda: st.session_state.update(current_page = "Homepage"))
-
-        with st.sidebar.expander(label = "Anagrafiche", icon = "👥"):
-            st.button(label = "Inserisci anagrafica", use_container_width = True, icon = "➕", on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"))
-            st.button(label = "Visualizza soci", use_container_width = True, icon = "🔍", on_click = lambda: st.session_state.update(current_page = "Visualizza soci"))
-            st.button(label = "Tesseramento", use_container_width = True, icon = "🪪", on_click = lambda: st.session_state.update(current_page = "Tesseramento"))
-            st.button(label = "Visualizza tesserati", use_container_width = True, icon = "🔍")
-
-        with st.sidebar.expander(label = "Tessere", icon = "🪪"):
-            st.button(label = "Inserisci tipo tessera", use_container_width = True, icon = "➕")
-            st.button(label = "Inserisci tipo qualifica", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza qualifiche", use_container_width = True, icon = "🔍")
-
-        with st.sidebar.expander(label = "Direttivo", icon = "📄"):
-            st.button(label = "Programma riunione direttivo", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza riunioni direttivo", use_container_width = True, icon = "🔍")
-            st.button(label = "Inserisci presenze direttivo", use_container_width = True, icon = "📝")
-
-        with st.sidebar.expander(label = "Assemblea", icon = "📣"):
-            st.button(label = "Programma riunione assemblea", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza riunioni assemblea", use_container_width = True, icon = "🔍")
-            st.button(label = "Inserisci presenze assemblea", use_container_width = True, icon = "📝")
-
-        with st.sidebar.expander(label = "Enti", icon = "🏢"):
-            st.button(label = "Inserisci ente", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza enti", use_container_width = True, icon = "🔍")
-            st.button(label = "Inserisci affiliazione", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza affiliazioni", use_container_width = True, icon = "🔍")
-
-        with st.sidebar.expander(label = "Attività", icon = "⚡"):
-            st.button(label = "Programma attività", use_container_width = True, icon = "➕")
-            st.button(label = "Visualizza attività", use_container_width = True, icon = "🔍")
-            st.button(label = "Gestisci prenotazioni attività", use_container_width = True, icon = "📝")
-
-        with st.sidebar.expander(label = "Profilo", icon = "👤"):
-            st.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️", on_click = lambda: st.session_state.update(current_page = "Cambia credenziali"))
-
-        st.sidebar.button(label = "Log out", use_container_width = True, on_click = log_out, type = "primary")
-
-    else:
-        if st.session_state.current_page == "Log in":
-            st.sidebar.button(label = "Login", use_container_width = True, icon = "🔑")
-        elif st.session_state.current_page == "Cambia credenziali":
-            st.sidebar.button(label = "Cambia credenziali", use_container_width = True, icon = "🔄️")'''
 
 # ------------------------ Crittazione delle password ------------------------
 

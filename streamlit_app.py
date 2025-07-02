@@ -47,7 +47,7 @@ if st.session_state.current_page == "Log in":
                     st.session_state.user = input_username_FL
 
                     for r in pd.read_sql(f"SELECT Ruolo FROM TBL_RUOLI WHERE Username = '{input_username_FL}'", st.session_state.engine)["Ruolo"]:
-                        st.session_state.role.append(r)
+                        st.session_state.role = r
 
                     if pd.isna(pd.read_sql(f"SELECT Ultimo_login FROM TBL_UTENTI WHERE Username = '{input_username_FL}'", st.session_state.engine)['Ultimo_login'].iloc[0]):
                         st.session_state.current_page = "Cambia credenziali"
@@ -155,15 +155,35 @@ if st.session_state.current_page == "Cambia credenziali":
                 else:
                     st.error("Vecchia password errata", icon = "❌")
 
-# ------------------------ Homepage page ------------------------
-    # Homepage del gestionale di spikkio.
-    # Grafico con anagrafiche/tesserati
-    # Numero maschi, femmine, nd
+# ------------------------ Bacheca page ------------------------
+    # Pagina principale dove l'utente vedrà i propri messaggi in bacheca
 
-if st.session_state.current_page == "Homepage":                                                                        # to do
-    st.title("🍋 SPIKKIO")
+if st.session_state.current_page == "Bacheca":                                                                         # to do
+    st.title("📌 Bacheca")
 
-    st.subheader(f"Dipenderà dai tipi di ruolo che hai.\nOra sei {', '.join(st.session_state.role)}")
+    query = f'''SELECT *
+                FROM TBL_COMUNICAZIONI
+                WHERE Destinatario = '{st.session_state.user}';
+            '''
+    
+    df_comunicazioni = pd.read_sql(query, st.session_state.engine)
+
+    with st.container(border = True):
+        for _, c in df_comunicazioni.iterrows():
+            with st.container(border = True):
+                icon = ""
+
+                if c['Categoria'] == "Avviso":
+                    icon = "🔔"
+                elif c['Categoria'] == 'Evento':
+                    icon = "📅"
+                elif c['Categoria'] == 'Convocazione':
+                    icon = "📣"
+                else:
+                    icon = "🟥"
+
+                st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}")
+                st.write(c['Testo'])
 
 # ------------------------ Inserisci anagrafica page ------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
