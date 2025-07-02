@@ -29,7 +29,8 @@ def initialize_var():
 # ------------------------ Log out ------------------------
 
 def log_out():
-    initialize_var()
+    for var in ss_variables:
+        st.session_state[var] = ss_variables[var]
 
 # ------------------------ Gestione della navigazione ------------------------
     # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine

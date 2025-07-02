@@ -55,14 +55,13 @@ if st.session_state.current_page == "Log in":
                         st.session_state.logged = True
                         st.session_state.current_page = "Bacheca"
 
-                        with st.session_state.engine.connect() as conn:
+                        with st.session_state.engine.begin() as conn:
                             conn.execute(
                                 text("UPDATE TBL_UTENTI SET Ultimo_login = CURRENT_TIMESTAMP WHERE Username = :username"),
                                 {"username": input_username_FL}
                             )
-                            conn.commit()
 
-                    st.rerun()
+                        st.rerun()
                 else:
                     st.error("Password errata", icon = "❌")
     
@@ -161,15 +160,37 @@ if st.session_state.current_page == "Cambia credenziali":
 if st.session_state.current_page == "Bacheca":                                                                         # to do
     st.title("📌 Bacheca")
 
-    query = f'''SELECT *
-                FROM TBL_COMUNICAZIONI
-                WHERE Destinatario = '{st.session_state.user}';
-            '''
-    
-    df_comunicazioni = pd.read_sql(query, st.session_state.engine)
-
     with st.container(border = True):
+        c1, c2, c3 = st.columns([0.6, 0.2, 0.2], vertical_alignment = 'bottom')
+
+        with c1:
+            filter_titolo_B = st.text_input("Cerca comunicazioni", placeholder = "Titolo comunicazione")
+
+        with c2:
+            filter_Categoria_B = st.selectbox("Cerca categoria", ['', 'Avviso', 'Evento', 'Convocazione', 'Altro'])
+
+        with c3:
+            ancheLette = st.toggle("Mostra comunicazioni lette")
+
+        query = f'''SELECT *
+                    FROM TBL_COMUNICAZIONI
+                    WHERE Destinatario = '{st.session_state.user}' AND
+                        Titolo LIKE '%{filter_titolo_B}%' AND
+                        Categoria LIKE '%{filter_Categoria_B}%'
+                    ORDER BY Data_pubblicazione DESC;
+                '''
+        
+        df_comunicazioni = pd.read_sql(query, st.session_state.engine)
+
+        st.write("")
+        st.write("")
+
         for _, c in df_comunicazioni.iterrows():
+            if not ancheLette and c['Stato'] == 'Letta':
+                continue
+
+            bachecaVuota = False
+
             with st.container(border = True):
                 icon = ""
 
@@ -182,16 +203,36 @@ if st.session_state.current_page == "Bacheca":                                  
                 else:
                     icon = "🟥"
 
-                st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}")
-                st.write(c['Testo'])
+                st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}", divider = "gray")
+                
+                c1, c2 = st.columns([0.75, 0.15], vertical_alignment = 'top')
 
-                if c['Allegato'] is not None and not pd.isna(c['Allegato']) and len(c['Allegato']) > 0:   # CAMBIARE ASSOLUTAMENTE LA GESTIONE DEI DOWNLOAD
+                with c1:
+                    st.write(f"{c['Testo']}")
+
+                with c2:
+                    if c['Stato'] == 'Non letta':
+                        segna_come_letta = st.button("Segna come letta", use_container_width = True, key = f"{c['ID_comunicazione']}-read_toggle")
+
+                        if segna_come_letta:
+                            with st.session_state.engine.connect() as conn:
+                                conn.execute(text('''UPDATE TBL_COMUNICAZIONI
+                                                     SET Stato = 'Letta'
+                                                     WHERE ID_comunicazione = :ID'''), {'ID': c['ID_comunicazione']})
+                                conn.commit()
+
+                            st.rerun()
+
+                if c['Allegato'] is not None and not pd.isna(c['Allegato']) and len(c['Allegato']) > 0:
                     st.download_button(
                         label = "Scarica allegato",
                         data = c['Allegato'],
                         file_name = f"{c['ID_comunicazione']}_allegato.{c['Estensione_allegato']}",
-                        mime = "application/octet-stream"
+                        mime = "application/octet-stream",
+                        icon = "📁"
                     )
+
+                st.write(f":gray[Data pubblicazione: {c['Data_pubblicazione'].strftime('%d-%m-%Y')} - {c['Data_pubblicazione'].strftime('%H:%M:%S')}]")
 
 # ------------------------ Inserisci anagrafica page ------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
