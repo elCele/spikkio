@@ -6,6 +6,5 @@ mysql-connector-python
 datetime
 bcrypt
 secure-smtplib
-email
 password_strength
 python-magic
