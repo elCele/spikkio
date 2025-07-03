@@ -95,7 +95,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -126,17 +126,3 @@ users = {
         Pagina("Visualizza soci", "🔍", False)
     ]
 }
-
-# ------------------------ Container per la bacheca ------------------------
-
-scrollable_container_style = """
-    <style>
-    .scrollable-container {
-        height: 300px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    </style>
-"""
