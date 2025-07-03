@@ -58,7 +58,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -107,22 +107,205 @@ users = {
         ])
     ],
 
-    "Gestore dei team": [],
+    "Gestore dei team": [
+        Pagina("Bacheca", "📌", False),
 
-    "Gestore delle attività": [],
+        Expander("Teams", "👥", False, [
+            Pagina("Crea team", "➕", True),
+            Pagina("Modifica teams", "🔧", True),
+            Pagina("Visualizza teams", "🔍", True),
+            Pagina("Disattiva team", "➖", True)
+        ]),
 
-    "Gestore dei tesseramenti": [],
+        Pagina("Crea comunicazione", "📝", False),
 
-    "Gestore della contabilità": [],
+        Expander("Dati socio", "🗂️", False, [
+            Pagina("Visualizza contributi", "📊", True),
+            Pagina("Visualizza tessere", "🪪", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza attività", "📅", True),
+            Pagina("Visualizza convocazioni", "📣", True)
+        ]),
 
-    "Amministratore della contabilità": [],
+        Expander("Profilo", "👤", False, [
+            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza segnalazioni", "🔍", True),
+            Pagina("Cambia credenziali", "🔄️", True)
+        ])
+    ],
 
-    "Gestore collaborazioni ed enti": [],
+    "Gestore delle attività": [
+        Pagina("Bacheca", "📌", False),
 
-    "Gestore completo": [],
+        Expander("Attività", "📅", False, [
+            Pagina("Crea attività", "➕", True),
+            Pagina("Visualizza attività", "🔍", True),
+            Pagina("Elimina attività", "➖", True),
+            Pagina("Visualizza iscrizioni", "📋", True)
+        ]),
+
+        Expander("Enti", "🏛️", False, [
+            Expander("Anagrafiche", "🗂️", True, [
+                Pagina("Aggiungi ente", "➕", True),
+                Pagina("Visualizza enti", "🔍", True)
+            ]),
+
+            Expander("Affiliazioni", "🔗", True, [
+                Pagina("Crea affiliazione", "➕", True),
+                Pagina("Visualizza affiliazioni", "🔍", True)
+            ])
+        ]),
+
+        Pagina("Crea comunicazione", "📝", False),
+
+        Expander("Dati socio", "🗂️", False, [
+            Pagina("Visualizza contributi", "📊", True),
+            Pagina("Visualizza tessere", "🪪", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza attività", "📅", True),
+            Pagina("Visualizza convocazioni", "📣", True)
+        ]),
+
+        Expander("Profilo", "👤", False, [
+            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza segnalazioni", "🔍", True),
+            Pagina("Cambia credenziali", "🔄️", True)
+        ])
+    ],
+
+    "Gestore dei tesseramenti": [
+        Pagina("Bacheca", "📌", False),
+
+        Expander("Anagrafiche", "🗂️", True, [
+            Pagina("Inserisci anagrafica", "➕", True),
+            Pagina("Visualizza anagrafiche", "🔍", True)
+        ]),
+
+        Expander("Tessere", "🔗", True, [
+            Pagina("Tesseramento socio", "🪪", True),
+            Pagina("Crea tessera", "➕", True),
+            Pagina("Visualizza tessere", "🔍", True)
+        ]),
+
+        Pagina("Crea comunicazione", "📝", False),
+
+        Expander("Dati socio", "🗂️", False, [
+            Pagina("Visualizza contributi", "📊", True),
+            Pagina("Visualizza tessere", "🪪", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza attività", "📅", True),
+            Pagina("Visualizza convocazioni", "📣", True)
+        ]),
+
+        Expander("Profilo", "👤", False, [
+            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza segnalazioni", "🔍", True),
+            Pagina("Cambia credenziali", "🔄️", True)
+        ])
+    ],
+
+    "Gestore della contabilità": [
+
+    ],
+
+    "Amministratore della contabilità": [
+
+    ],
+
+    "Gestore completo": [
+        Pagina("Bacheca", "📌", False),
+
+        Expander("Anagrafiche", "🗂️", False, [
+            Pagina("Inserisci anagrafica", "➕", True),
+            Pagina("Visualizza anagrafiche", "🔍", True),
+            Pagina("Gestisci utenze", "⚙️", True)
+        ]),
+
+        Expander("Tessere", "🔗", False, [
+            Pagina("Crea tessera", "➕", True),
+            Pagina("Visualizza tessere", "🔍", True)
+        ]),
+
+        Expander("Teams", "👥", False, [
+            Pagina("Crea team", "➕", True),
+            Pagina("Modifica teams", "🔧", True),
+            Pagina("Visualizza teams", "🔍", True),
+            Pagina("Disattiva team", "➖", True)
+        ]),
+
+        Expander("Attività", "📅", False, [
+            Pagina("Crea attività", "➕", True),
+            Pagina("Visualizza attività", "🔍", True),
+            Pagina("Elimina attività", "➖", True),
+            Pagina("Visualizza iscrizioni", "📋", True)
+        ]),
+
+        Expander("Enti", "🏛️", False, [
+            Expander("Anagrafiche", "🗂️", True, [
+                Pagina("Aggiungi ente", "➕", True),
+                Pagina("Visualizza enti", "🔍", True)
+            ]),
+
+            Expander("Affiliazioni", "🔗", True, [
+                Pagina("Crea affiliazione", "➕", True),
+                Pagina("Visualizza affiliazioni", "🔍", True)
+            ])
+        ]),
+
+        # aggiungere il resto
+
+        Expander("Dati socio", "🗂️", False, [
+            Pagina("Visualizza contributi", "📊", True),
+            Pagina("Visualizza tessere", "🪪", True),
+            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza attività", "📅", True),
+            Pagina("Visualizza convocazioni", "📣", True)
+        ]),
+
+        Expander("Profilo", "👤", False, [
+            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza segnalazioni", "🔍", True),
+            Pagina("Cambia credenziali", "🔄️", True)
+        ])
+    ],
 
     "master": [
         Pagina("Inserisci anagrafica", "➕", False),
-        Pagina("Visualizza soci", "🔍", False)
+        Pagina("Visualizza anagrafiche", "🔍", False)
     ]
 }
+
+    # Pagine                               5 / 33
+        # - Log in ------------------------ ✅
+        # - Bacheca ----------------------- ✅
+        # - Visualizza contributi --------- ❌
+        # - Visualizza tessere ------------ ❌
+        # - Visualizza team --------------- ❌
+        # - Visualizza attività ----------- ❌
+        # - Visualizza convocazioni ------- ❌
+        # - Effettua segnalazioni --------- ❌
+        # - Cambia credenziali ------------ ✅
+        # - Visualizza team --------------- ❌
+        # - Modifica team ----------------- ❌
+        # - Aggiungi membri --------------- ❌
+        # - Visualizza membri ------------- ❌
+        # - Elimina membri ---------------- ❌
+        # - Crea attività ----------------- ❌
+        # - Visualizza attività ----------- ❌
+        # - Elimina attività -------------- ❌
+        # - Crea comunicazione ------------ ❌
+        # - Crea team --------------------- ❌
+        # - Modifica teams ---------------- ❌
+        # - Visualizza teams -------------- ❌
+        # - Disattiva team ---------------- ❌
+        # - Visualizza iscrizioni --------- ❌
+        # - Aggiungi ente ----------------- ❌
+        # - Visualizza enti --------------- ❌
+        # - Crea affiliazione ------------- ❌
+        # - Visualizza affiliazioni ------- ❌
+        # - Inserisci anagrafica ---------- ✅
+        # - Visualizza anagrafiche -------- ✅
+        # - Tesseramento socio ------------ ❌
+        # - Crea tessera ------------------ ❌
+        # - Visualizza tessere ------------ ❌
+        # - Gestisci utenze --------------- ❌

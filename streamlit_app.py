@@ -17,7 +17,7 @@ st.set_page_config(
         initial_sidebar_state = "auto"
     )
 
-# ------------------------ Log in page ------------------------
+# ------------------------ Log in page --------------------------------------------------------------------------------
     # Pagina iniziale dove viene richiesto il log in.
 
 if st.session_state.current_page == "Log in":
@@ -66,7 +66,7 @@ if st.session_state.current_page == "Log in":
                     st.error("Password errata", icon = "❌")
     
 
-# ------------------------ Cambia credenziali page ------------------------
+# ------------------------ Cambia credenziali page --------------------------------------------------------------------
     # Pagina per l'aggiornamento delle credenziali.
 
 if st.session_state.current_page == "Cambia credenziali":
@@ -154,7 +154,7 @@ if st.session_state.current_page == "Cambia credenziali":
                 else:
                     st.error("Vecchia password errata", icon = "❌")
 
-# ------------------------ Bacheca page ------------------------
+# ------------------------ Bacheca page -------------------------------------------------------------------------------
     # Pagina principale dove l'utente vedrà i propri messaggi in bacheca
 
 if st.session_state.current_page == "Bacheca":                                                                         # to do
@@ -234,7 +234,7 @@ if st.session_state.current_page == "Bacheca":                                  
 
                 st.write(f":gray[Data pubblicazione: {c['Data_pubblicazione'].strftime('%d-%m-%Y')} - {c['Data_pubblicazione'].strftime('%H:%M:%S')}]")
 
-# ------------------------ Inserisci anagrafica page ------------------------
+# ------------------------ Inserisci anagrafica page ------------------------------------------------------------------
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
     # necessari, con tanto di controlli su ogni campo
 
@@ -383,14 +383,14 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
                 with c2:
                     st.button(label = "No", use_container_width = True, on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"), type = "primary")
 
-# ------------------------ Visualizza soci page ------------------------
+# ------------------------ Visualizza soci page -----------------------------------------------------------------------
     # Pagina per la visualizzazione del contenuto della tabella TBL_ANAGRAFICHE.
     # Ricerca con filtri.
     # Pulsanti per aggiornare.
     # Pulsante per scaricare .pdf
 
-if st.session_state.current_page == "Visualizza soci":                                                                 # to do
-    st.title("🔍 Visualizza soci")
+if st.session_state.current_page == "Visualizza anagrafiche":                                                          # to do
+    st.title("🔍 Visualizza anagrafiche")
 
     if "master" in st.session_state.role:
         df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
@@ -400,53 +400,49 @@ if st.session_state.current_page == "Visualizza soci":                          
 
 
     with st.expander("Filtri", expanded = False):
-        with st.form(key = "form_visualizza_soci", clear_on_submit = True, enter_to_submit = True, border = False):
-            filter_CF_VS = st.text_input(label = "Codice fiscale", placeholder = "AAAAAA00A00A000A")
+        filter_CF_VS = st.text_input(label = "Codice fiscale", placeholder = "AAAAAA00A00A000A")
 
-            c1, c2 = st.columns(2)
+        c1, c2 = st.columns(2)
 
-            with c1:
-                filter_nome_VS = st.text_input(label = "Nome")
+        with c1:
+            filter_nome_VS = st.text_input(label = "Nome")
 
-            with c2:
-                filter_cognome_VS = st.text_input(label = "Cognome")
+        with c2:
+            filter_cognome_VS = st.text_input(label = "Cognome")
 
-            c1, c2, c3 = st.columns(3)
+        c1, c2, c3 = st.columns(3)
 
-            with c1:
-                filter_dataNascita_VS = st.date_input(label = "Data di nascita", min_value = datetime.date(1000, 1, 1), max_value = datetime.date(3000, 1, 1), value = (datetime.date(1000, 1, 1), datetime.date(3000, 1, 1)))
+        with c1:
+            filter_dataNascita_VS = st.date_input(label = "Data di nascita", min_value = datetime.date(1000, 1, 1), max_value = datetime.date(3000, 1, 1), value = (datetime.date(1000, 1, 1), datetime.date(3000, 1, 1)))
 
-            with c2:
-                filter_luogoNascita_VS = st.text_input(label = "Luogo di nascita")
+        with c2:
+            filter_luogoNascita_VS = st.text_input(label = "Luogo di nascita")
 
-            with c3:
-                filter_sesso_VS = st.selectbox(label = "Sesso", options = ["", "M", "F", "ND"])
+        with c3:
+            filter_sesso_VS = st.selectbox(label = "Sesso", options = ["", "M", "F", "ND"])
 
-            c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns(4)
 
-            with c1:
-                filter_indirizzo_VS = st.text_input(label = "Indirizzo")
+        with c1:
+            filter_indirizzo_VS = st.text_input(label = "Indirizzo")
 
-            with c2:
-                filter_città_VS = st.text_input(label = "Città")
+        with c2:
+            filter_città_VS = st.text_input(label = "Città")
 
-            with c3:
-                filter_provincia_VS = st.selectbox(label = "Provincia", options = c.province_sigle)
+        with c3:
+            filter_provincia_VS = st.selectbox(label = "Provincia", options = c.province_sigle)
 
-            with c4:
-                filter_CAP_VS = st.text_input(label = "CAP", placeholder = "00000")
+        with c4:
+            filter_CAP_VS = st.text_input(label = "CAP", placeholder = "00000")
 
-            c1, c2, = st.columns(2)
+        c1, c2, = st.columns(2)
 
-            with c1:
-                filter_cellulare_VS = st.text_input(label = "Cellulare del socio", placeholder = "+000000000000")
+        with c1:
+            filter_cellulare_VS = st.text_input(label = "Cellulare del socio", placeholder = "+000000000000")
 
-            with c2:
-                filter_email_VS = st.text_input(label = "Email del socio")
+        with c2:
+            filter_email_VS = st.text_input(label = "Email del socio")
 
-            is_cerca = st.form_submit_button(label = "Cerca", use_container_width = True, icon = "🔍")
-
-    if is_cerca:
         query = "SELECT * FROM TBL_ANAGRAFICHE;"
         filters = []
         params = {}
@@ -514,88 +510,88 @@ if st.session_state.current_page == "Visualizza soci":                          
     else:
         st.dataframe(df)
 
-# ------------------------ Tesseramento page ------------------------
+# ------------------------ Tesseramento page --------------------------------------------------------------------------
     # Pagina per il tesseramento di un socio.
 
-if st.session_state.current_page == "Tesseramento":                                                                    # to do
+if st.session_state.current_page == "Tesseramento socio":                                                                    # to do
     st.title("🪪 Tesseramento")
 
-# ------------------------ Inserisci tipo tessera page ------------------------
+# ------------------------ Inserisci tipo tessera page ----------------------------------------------------------------
 
 if st.session_state.current_page == "Inserisci tipo tessera":                                                          # to do
     pass
 
-# ------------------------ Visualizza tessere page ------------------------
+# ------------------------ Visualizza tessere page --------------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza tessere":                                                              # to do
     pass
 
-# ------------------------ Inserisci tipo qualifica page ------------------------
+# ------------------------ Inserisci tipo qualifica page --------------------------------------------------------------
 
 if st.session_state.current_page == "Inserisci tipo qualifica":                                                        # to do
     pass
 
-# ------------------------ Visualizza qualifiche page ------------------------
+# ------------------------ Visualizza qualifiche page -----------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza qualifiche":                                                           # to do
     pass
 
-# ------------------------ Programma riunione direttivo page ------------------------
+# ------------------------ Programma riunione direttivo page ----------------------------------------------------------
 
 if st.session_state.current_page == "Programma riunione direttivo":                                                    # to do
     pass
 
-# ------------------------ Visualizza riunioni direttivo page ------------------------
+# ------------------------ Visualizza riunioni direttivo page ---------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza riunioni direttivo":                                                   # to do
     pass
 
-# ------------------------ Inserisci presenze direttivo ------------------------
+# ------------------------ Inserisci presenze direttivo ---------------------------------------------------------------
 
 if st.session_state.current_page == "Inserisci presenze direttivo":                                                    # to do
     pass
 
-# ------------------------ Programma riunioni assemblea page ------------------------
+# ------------------------ Programma riunioni assemblea page ----------------------------------------------------------
 
 if st.session_state.current_page == "Programma riunione assemblea":                                                    # to do
     pass
 
-# ------------------------ Visualizza riunioni assemblea page ------------------------
+# ------------------------ Visualizza riunioni assemblea page ---------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza riunioni assemblea":                                                   # to do
     pass
 
-# ------------------------ Inserisci ente page ------------------------
+# ------------------------ Inserisci ente page ------------------------------------------------------------------------
 
 if st.session_state.current_page == "Inserisci ente":                                                                  # to do
     pass
 
-# ------------------------ Visualizza enti ------------------------
+# ------------------------ Visualizza enti ----------------------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza enti":                                                                 # to do
     pass
 
-# ------------------------ Inserisci affiliazione page ------------------------
+# ------------------------ Inserisci affiliazione page ----------------------------------------------------------------
 
 if st.session_state.current_page == "Inserisci affiliazione":                                                          # to do
     pass
 
-# ------------------------ Visualizza affiliazione page ------------------------
+# ------------------------ Visualizza affiliazione page ---------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza affiliazione":                                                         # to do
     pass
 
-# ------------------------ Programma attività page ------------------------
+# ------------------------ Programma attività page --------------------------------------------------------------------
 
 if st.session_state.current_page == "Programma attività":                                                              # to do
     pass
 
-# ------------------------ Visualizza attività page ------------------------
+# ------------------------ Visualizza attività page -------------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza attività":                                                             # to do
     pass
 
-# ------------------------ Gestisci prenotazioni attività page ------------------------
+# ------------------------ Gestisci prenotazioni attività page --------------------------------------------------------
 
 if st.session_state.current_page == "Gestisci prenotazioni attività":                                                  # to do
     pass
