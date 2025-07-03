@@ -21,6 +21,40 @@ province_sigle = [
 policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special = 1)
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
+    # Pagine                               5 / 33
+        # - Log in ------------------------ ✅
+        # - Bacheca ----------------------- ✅
+        # - Visualizza contributi --------- ❌
+        # - Visualizza tessere ------------ ❌
+        # - Visualizza team --------------- ❌
+        # - Visualizza attività ----------- ❌
+        # - Visualizza convocazioni ------- ❌
+        # - Effettua segnalazioni --------- ❌
+        # - Cambia credenziali ------------ ✅
+        # - Visualizza team --------------- ❌
+        # - Modifica team ----------------- ❌
+        # - Aggiungi membri --------------- ❌
+        # - Visualizza membri ------------- ❌
+        # - Elimina membri ---------------- ❌
+        # - Crea attività ----------------- ❌
+        # - Visualizza attività ----------- ❌
+        # - Elimina attività -------------- ❌
+        # - Crea comunicazione ------------ ❌
+        # - Crea team --------------------- ❌
+        # - Modifica teams ---------------- ❌
+        # - Visualizza teams -------------- ❌
+        # - Disattiva team ---------------- ❌
+        # - Visualizza iscrizioni --------- ❌
+        # - Aggiungi ente ----------------- ❌
+        # - Visualizza enti --------------- ❌
+        # - Crea affiliazione ------------- ❌
+        # - Visualizza affiliazioni ------- ❌
+        # - Inserisci anagrafica ---------- ✅
+        # - Visualizza anagrafiche -------- ✅
+        # - Tesseramento socio ------------ ❌
+        # - Crea tessera ------------------ ❌
+        # - Visualizza tessere ------------ ❌
+        # - Gestisci utenze --------------- ❌
 
 class Pagina:
     def __init__(self, nome, icona, in_expander):
@@ -274,38 +308,3 @@ users = {
         Pagina("Visualizza anagrafiche", "🔍", False)
     ]
 }
-
-    # Pagine                               5 / 33
-        # - Log in ------------------------ ✅
-        # - Bacheca ----------------------- ✅
-        # - Visualizza contributi --------- ❌
-        # - Visualizza tessere ------------ ❌
-        # - Visualizza team --------------- ❌
-        # - Visualizza attività ----------- ❌
-        # - Visualizza convocazioni ------- ❌
-        # - Effettua segnalazioni --------- ❌
-        # - Cambia credenziali ------------ ✅
-        # - Visualizza team --------------- ❌
-        # - Modifica team ----------------- ❌
-        # - Aggiungi membri --------------- ❌
-        # - Visualizza membri ------------- ❌
-        # - Elimina membri ---------------- ❌
-        # - Crea attività ----------------- ❌
-        # - Visualizza attività ----------- ❌
-        # - Elimina attività -------------- ❌
-        # - Crea comunicazione ------------ ❌
-        # - Crea team --------------------- ❌
-        # - Modifica teams ---------------- ❌
-        # - Visualizza teams -------------- ❌
-        # - Disattiva team ---------------- ❌
-        # - Visualizza iscrizioni --------- ❌
-        # - Aggiungi ente ----------------- ❌
-        # - Visualizza enti --------------- ❌
-        # - Crea affiliazione ------------- ❌
-        # - Visualizza affiliazioni ------- ❌
-        # - Inserisci anagrafica ---------- ✅
-        # - Visualizza anagrafiche -------- ✅
-        # - Tesseramento socio ------------ ❌
-        # - Crea tessera ------------------ ❌
-        # - Visualizza tessere ------------ ❌
-        # - Gestisci utenze --------------- ❌
