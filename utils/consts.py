@@ -21,7 +21,7 @@ province_sigle = [
 policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special = 1)
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
-    # Pagine                               5 / 33
+    # Pagine                               6 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌
@@ -29,7 +29,7 @@ policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special 
         # - Visualizza team --------------- ❌
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌
-        # - Effettua segnalazioni --------- ❌
+        # - Effettua segnalazioni --------- ✅
         # - Cambia credenziali ------------ ✅
         # - Visualizza team --------------- ❌
         # - Modifica team ----------------- ❌
@@ -55,6 +55,7 @@ policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special 
         # - Crea tessera ------------------ ❌
         # - Visualizza tessere ------------ ❌
         # - Gestisci utenze --------------- ❌
+        # - Gestisci segnalazioni --------- ❌
 
 class Pagina:
     def __init__(self, nome, icona, in_expander):
@@ -285,6 +286,9 @@ users = {
                 Pagina("Visualizza affiliazioni", "🔍", True)
             ])
         ]),
+
+        Pagina("Crea comunicazione", "📝", False),
+        Pagina("Gestisci segnalazioni", "🛠️", False),
 
         # aggiungere il resto
 

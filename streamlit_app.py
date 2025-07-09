@@ -29,13 +29,13 @@ if st.session_state.current_page == "Log in":
         input_username_FL = st.text_input(label = "Username")
         input_password_FL = st.text_input(label = "Password", type = "password")
 
-        submitted = st.form_submit_button(label = "Submit", use_container_width = True)
+        submitted = st.form_submit_button(label = "Log in", use_container_width = True)
 
         if submitted:
             user_row = utenti[utenti['Username'] == input_username_FL]
 
             if user_row.empty:
-                st.error("Utente non trovato", icon = "❌")
+                st.error("Utente non trovato", icon = "🚨")
             else:
                 st.session_state.CF_socio = user_row.iloc[0]['CF_socio']
 
@@ -63,7 +63,7 @@ if st.session_state.current_page == "Log in":
 
                         st.rerun()
                 else:
-                    st.error("Password errata", icon = "❌")
+                    st.error("Password errata", icon = "🚨")
     
 
 # ------------------------ Cambia credenziali page --------------------------------------------------------------------
@@ -91,7 +91,7 @@ if st.session_state.current_page == "Cambia credenziali":
         )
 
         if df.empty:
-            st.error("Utente non trovato", icon = "❌")
+            st.error("Utente non trovato", icon = "🚨")
         else:
             err = []
 
@@ -112,7 +112,7 @@ if st.session_state.current_page == "Cambia credenziali":
 
             if err:
                 for e in err:
-                    st.error(e, icon = "❌")
+                    st.error(e, icon = "🚨")
             else:
                 st.session_state.CF_socio = input_username_CC
 
@@ -152,7 +152,7 @@ if st.session_state.current_page == "Cambia credenziali":
                     st.session_state.current_page = "Bacheca"
                     st.rerun()
                 else:
-                    st.error("Vecchia password errata", icon = "❌")
+                    st.error("Vecchia password errata", icon = "🚨")
 
 # ------------------------ Bacheca page -------------------------------------------------------------------------------
     # Pagina principale dove l'utente vedrà i propri messaggi in bacheca
@@ -308,7 +308,7 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
 
         if err:
             for e in err:
-                st.error(e, icon = "❌")
+                st.error(e, icon = "🚨")
         else:
             query = text('''INSERT INTO TBL_ANAGRAFICHE (CF, Nome, Cognome, Data_nascita, Luogo_nascita, Sesso, Indirizzo, Città, Provincia, CAP, Cellulare, Email)
                     VALUES (:CF, :Nome, :Cognome, :Data_nascita, :Luogo_nascita, :Sesso, :Indirizzo, :Città, :Provincia, :CAP, :Cellulare, :Email);
@@ -595,3 +595,51 @@ if st.session_state.current_page == "Visualizza attività":                     
 
 if st.session_state.current_page == "Gestisci prenotazioni attività":                                                  # to do
     pass
+
+if st.session_state.current_page == "Effettua segnalazioni":                                                  # to do
+    st.title("📢 Effettua segnalazioni")
+
+    with st.form("form_effettua_segnalazioni", clear_on_submit = True):
+        input_titolo_ES = st.text_input("Titolo", max_chars = 200)
+        input_testo_ES = st.text_area("Segnalazione", height = 200, placeholder = 'Descrivere il problema in maniera breve ma dettagliata')
+
+        submitted = st.form_submit_button("Submit", use_container_width = True, type = 'primary')
+
+        if submitted:
+            err = []
+
+            if input_titolo_ES == '':
+                err.append("Il campo Titolo non può essere vuoto.")
+
+            if input_testo_ES == '':
+                err.append('Il campo Segnalazione non può essere vuoto.')
+
+            if err:
+                for e in err:
+                    st.error(e, icon = "🚨")
+            else:
+                query = text('''INSERT INTO TBL_SEGNALAZIONI (Titolo, Testo, Creato_da)
+                                VALUES (:titolo, :testo, :creato_da)
+                                ''')
+                
+                with st.session_state.engine.connect() as conn:
+                    conn.execute(query, {
+                        'titolo': input_titolo_ES,
+                        'testo': input_testo_ES,
+                        'creato_da': st.session_state.user
+                    })
+
+                    conn.commit()
+
+            st.success("La segnalazione è stata inviata correttamente", icon = "✅")
+
+if st.session_state.current_page == "Visualizza segnalazioni":                                                  # to do
+    st.title("🔍 Visualizza segnalazioni")
+
+    query = f'''SELECT *
+                FROM TBL_SEGNALAZIONI
+                WHERE Creato_da = '{st.session_state.user}';'''
+    
+    segnalazioni = pd.read_sql(query, st.session_state.engine)
+
+    st.write(segnalazioni)
