@@ -167,7 +167,7 @@ if st.session_state.current_page == "Bacheca":                                  
             filter_titolo_B = st.text_input("Cerca comunicazioni", placeholder = "Titolo comunicazione")
 
         with c2:
-            filter_Categoria_B = st.selectbox("Cerca categoria", ['', 'Avviso', 'Evento', 'Convocazione', 'Altro'])
+            filter_Categoria_B = st.selectbox("Cerca categoria", ['', 'Avviso', 'Evento', 'Convocazione', 'Segnalazione', 'Altro'])
 
         with c3:
             ancheLette = st.toggle("Mostra comunicazioni lette")
@@ -189,8 +189,6 @@ if st.session_state.current_page == "Bacheca":                                  
             if not ancheLette and c['Stato'] == 'Letta':
                 continue
 
-            bachecaVuota = False
-
             with st.container(border = True):
                 icon = ""
 
@@ -200,8 +198,10 @@ if st.session_state.current_page == "Bacheca":                                  
                     icon = "📅"
                 elif c['Categoria'] == 'Convocazione':
                     icon = "📣"
+                elif c['Categoria'] == 'Segnalazione':
+                    icon = "📢"
                 else:
-                    icon = "🟥"
+                    icon = "⭕"
 
                 st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}", divider = "gray")
                 
@@ -212,7 +212,7 @@ if st.session_state.current_page == "Bacheca":                                  
 
                 with c2:
                     if c['Stato'] == 'Non letta':
-                        segna_come_letta = st.button("Segna come letta", use_container_width = True, key = f"{c['ID_comunicazione']}-read_toggle")
+                        segna_come_letta = st.button("Segna come letta", use_container_width = True, key = f"{c['ID_comunicazione']} - read_toggle")
 
                         if segna_come_letta:
                             with st.session_state.engine.connect() as conn:
@@ -633,13 +633,48 @@ if st.session_state.current_page == "Effettua segnalazioni":                    
 
             st.success("La segnalazione è stata inviata correttamente", icon = "✅")
 
-if st.session_state.current_page == "Visualizza segnalazioni":                                                  # to do
-    st.title("🔍 Visualizza segnalazioni")
+if st.session_state.current_page == "Gestisci segnalazioni":
+    st.title("🛠️ Gestisci segnalazioni")
 
     query = f'''SELECT *
                 FROM TBL_SEGNALAZIONI
-                WHERE Creato_da = '{st.session_state.user}';'''
-    
-    segnalazioni = pd.read_sql(query, st.session_state.engine)
+                WHERE Stato = 'Aperta';
+            '''
 
-    st.write(segnalazioni)
+    df_segnalazioni = pd.read_sql(query, st.session_state.engine)
+
+    st.write(df_segnalazioni)
+
+    for _, s in df_segnalazioni.iterrows():
+        with st.container(border = True):
+            icon = ""
+
+            if s['Priorità'] == 'Da impostare':
+                icon = "#️⃣"
+            elif s['Priorità'] == 'Alta':
+                icon = "🔴"
+            elif s['Priorità'] == 'Media':
+                icon = "🟡"
+            else:
+                icon = "🟢"
+
+            st.subheader(f"{icon} - {s['Titolo']}")
+
+            c1, c2 = st.columns([0.7, 0.3])
+
+            with c1:
+                with st.container(border = True, height = 200):
+                    st.write(s['Testo'])
+
+            with c2:
+                if s['Priorità'] == 'Da impostare':
+                    st.selectbox("Seleziona priorità", ['Da impostare', 'Alta', 'Media', 'Bassa'], key = f"{s['ID_segnalazione']} - priorità")
+
+                if s['Gestito_da'] == None:
+                    pic = st.button("Prendi in carico", key = f"{s['ID_segnalazione']} - presa_in_carico")
+
+                    if pic:
+                        st.write('DIOCANE')
+
+            st.write(f":gray[User: {s['Creato_da']}]")
+            st.write(f":gray[Data creazione: {s['Data_creazione'].strftime('%d-%m-%Y')} - {s['Data_creazione'].strftime('%H:%M:%S')}]")

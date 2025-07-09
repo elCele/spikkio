@@ -99,8 +99,7 @@ users = {
         ]),
 
         Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -137,7 +136,6 @@ users = {
 
         Expander("Profilo", "👤", False, [
             Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -164,7 +162,6 @@ users = {
 
         Expander("Profilo", "👤", False, [
             Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -203,7 +200,6 @@ users = {
 
         Expander("Profilo", "👤", False, [
             Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -234,7 +230,6 @@ users = {
 
         Expander("Profilo", "👤", False, [
             Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -302,7 +297,6 @@ users = {
 
         Expander("Profilo", "👤", False, [
             Pagina("Effettua segnalazioni", "📢", True),
-            Pagina("Visualizza segnalazioni", "🔍", True),
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
