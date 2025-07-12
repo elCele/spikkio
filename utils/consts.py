@@ -24,27 +24,27 @@ policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special 
     # Pagine                               6 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
-        # - Visualizza contributi --------- ❌
+        # - Visualizza contributi --------- ❌⌛
         # - Visualizza tessere ------------ ❌
-        # - Visualizza team --------------- ❌
+        # - Visualizza team --------------- ❌⌛
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌
         # - Effettua segnalazioni --------- ✅
         # - Cambia credenziali ------------ ✅
-        # - Visualizza team --------------- ❌
-        # - Modifica team ----------------- ❌
-        # - Aggiungi membri --------------- ❌
-        # - Visualizza membri ------------- ❌
-        # - Elimina membri ---------------- ❌
+        # - Visualizza team --------------- ❌⌛
+        # - Modifica team ----------------- ❌⌛
+        # - Aggiungi membri --------------- ❌⌛
+        # - Visualizza membri ------------- ❌⌛
+        # - Elimina membri ---------------- ❌⌛
         # - Crea attività ----------------- ❌
         # - Visualizza attività ----------- ❌
         # - Elimina attività -------------- ❌
         # - Crea comunicazione ------------ ❌
-        # - Crea team --------------------- ❌
-        # - Modifica teams ---------------- ❌
-        # - Visualizza teams -------------- ❌
-        # - Disattiva team ---------------- ❌
-        # - Visualizza iscrizioni --------- ❌
+        # - Crea team --------------------- ❌⌛
+        # - Modifica teams ---------------- ❌⌛
+        # - Visualizza teams -------------- ❌⌛
+        # - Disattiva team ---------------- ❌⌛
+        # - Visualizza iscrizioni --------- ❌⌛
         # - Aggiungi ente ----------------- ❌
         # - Visualizza enti --------------- ❌
         # - Crea affiliazione ------------- ❌
@@ -55,7 +55,7 @@ policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special 
         # - Crea tessera ------------------ ❌
         # - Visualizza tessere ------------ ❌
         # - Gestisci utenze --------------- ❌
-        # - Gestisci segnalazioni --------- ❌
+        # - Gestisci segnalazioni --------- ✅
 
 class Pagina:
     def __init__(self, nome, icona, in_expander):
@@ -87,7 +87,7 @@ class Expander:
                     pagina.build()
 
 users = {
-    "Utente standard": [
+    "Utente standard": [        # ----------------------------------- Utente standard -----------------------------------
         Pagina("Bacheca", "📌", False),
 
         Expander("Dati socio", "🗂️", False, [
@@ -104,8 +104,9 @@ users = {
         ])
     ],
 
-    "Gestore di un team": [
+    "Gestore di un team": [        # ----------------------------------- Gestore di un team -----------------------------------
         Pagina("Bacheca", "📌", False),
+        Pagina("Crea comunicazione", "📝", False),
 
         Expander("Il mio team", "🤝", False, [
             Pagina("Visualizza team", "🔍", True),
@@ -124,8 +125,6 @@ users = {
             ]),
         ]),
 
-        Pagina("Crea comunicazione", "📝", False),
-
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
@@ -140,8 +139,9 @@ users = {
         ])
     ],
 
-    "Gestore dei team": [
+    "Gestore dei team": [        # ----------------------------------- Gestore dei team -----------------------------------
         Pagina("Bacheca", "📌", False),
+        Pagina("Crea comunicazione", "📝", False),
 
         Expander("Teams", "👥", False, [
             Pagina("Crea team", "➕", True),
@@ -150,8 +150,6 @@ users = {
             Pagina("Disattiva team", "➖", True)
         ]),
 
-        Pagina("Crea comunicazione", "📝", False),
-
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
@@ -166,8 +164,9 @@ users = {
         ])
     ],
 
-    "Gestore delle attività": [
+    "Gestore delle attività": [        # ----------------------------------- Gestore delle attività -----------------------------------
         Pagina("Bacheca", "📌", False),
+        Pagina("Crea comunicazione", "📝", False),
 
         Expander("Attività", "📅", False, [
             Pagina("Crea attività", "➕", True),
@@ -188,8 +187,6 @@ users = {
             ])
         ]),
 
-        Pagina("Crea comunicazione", "📝", False),
-
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
@@ -204,8 +201,9 @@ users = {
         ])
     ],
 
-    "Gestore dei tesseramenti": [
+    "Gestore dei tesseramenti": [        # ----------------------------------- Gestore dei tesseramenti -----------------------------------
         Pagina("Bacheca", "📌", False),
+        Pagina("Crea comunicazione", "📝", False),
 
         Expander("Anagrafiche", "🗂️", True, [
             Pagina("Inserisci anagrafica", "➕", True),
@@ -218,8 +216,6 @@ users = {
             Pagina("Visualizza tessere", "🔍", True)
         ]),
 
-        Pagina("Crea comunicazione", "📝", False),
-
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
@@ -234,16 +230,18 @@ users = {
         ])
     ],
 
-    "Gestore della contabilità": [
+    "Gestore della contabilità": [        # ----------------------------------- Gestore della contabilità -----------------------------------
 
     ],
 
-    "Amministratore della contabilità": [
+    "Amministratore della contabilità": [        # ----------------------------------- Amministratore della contabilità -----------------------------------
 
     ],
 
-    "Gestore completo": [
+    "Gestore completo": [        # ----------------------------------- Gestore completo -----------------------------------
         Pagina("Bacheca", "📌", False),
+        Pagina("Crea comunicazione", "📝", False),
+        Pagina("Gestisci segnalazioni", "🛠️", False),
 
         Expander("Anagrafiche", "🗂️", False, [
             Pagina("Inserisci anagrafica", "➕", True),
@@ -282,9 +280,6 @@ users = {
             ])
         ]),
 
-        Pagina("Crea comunicazione", "📝", False),
-        Pagina("Gestisci segnalazioni", "🛠️", False),
-
         # aggiungere il resto
 
         Expander("Dati socio", "🗂️", False, [
@@ -301,7 +296,7 @@ users = {
         ])
     ],
 
-    "master": [
+    "master": [        # ----------------------------------- master -----------------------------------
         Pagina("Inserisci anagrafica", "➕", False),
         Pagina("Visualizza anagrafiche", "🔍", False)
     ]
