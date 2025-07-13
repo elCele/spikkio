@@ -18,7 +18,7 @@ province_sigle = [
 
 # ------------------------ Policy password ------------------------
 
-policy = PasswordPolicy.from_names(length = 8,uppercase = 1,numbers = 1,special = 1)
+policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, special = 1)
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
     # Pagine                               6 / 34 + ?
@@ -249,7 +249,8 @@ users = {
             Pagina("Gestisci utenze", "⚙️", True)
         ]),
 
-        Expander("Tessere", "🔗", False, [
+        Expander("Tessere", "🪪", False, [
+            Pagina("Tesseramento socio", "🪪", True),
             Pagina("Crea tessera", "➕", True),
             Pagina("Visualizza tessere", "🔍", True)
         ]),

@@ -266,7 +266,7 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            input_indirizzo_IA = st.text_input(label = "Indirizzo*", max_chars = 100)
+            input_indirizzo_IA = st.text_input(label = "Indirizzo*", max_chars = 100, placeholder = "No virgole   Es: strada dei pioppi 5")
 
         with c2:
             input_città_IA = st.text_input(label = "Città*", max_chars = 60)
@@ -393,10 +393,10 @@ if st.session_state.current_page == "Visualizza anagrafiche":                   
     st.title("🔍 Visualizza anagrafiche")
 
     if "master" in st.session_state.role:
-        df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
+        _anagrafiche = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
     else:
-        df = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE", st.session_state.engine)
-        df = df.drop(columns = ['Attivo'])
+        df_anagrafiche = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE", st.session_state.engine)
+        df_anagrafiche = df_anagrafiche.drop(columns = ['Attivo'])
 
 
     with st.expander("Filtri", expanded = False):
@@ -503,12 +503,25 @@ if st.session_state.current_page == "Visualizza anagrafiche":                   
         else:
             query = base_query
 
-        df = pd.read_sql(text(query), st.session_state.engine, params = params)
+        df_anagrafiche = pd.read_sql(text(query), st.session_state.engine, params = params)
 
-    if "master" in st.session_state.role:
-        st.data_editor(df)
-    else:
-        st.dataframe(df)
+    for _, a in df_anagrafiche.iterrows():
+        with st.container(border = True):
+            st.subheader(f"👤 {a['Nome']} {a['Cognome']} - :gray[{a['CF']}]")
+
+            st.write("")
+
+            c1, c2 = st.columns(2)
+
+            with c1:
+                st.write(f"📆 Data di nascita: :gray[{a['Data_nascita'].strftime('%d/%m/%Y')}]")
+                st.write(f"📍 Luogo di nascita: :gray[{a['Luogo_nascita']}]")
+                st.write(f"⚧️ Sesso: :gray[{a['Sesso']}]")
+
+            with c2:
+                st.write(f"🏠 Indirizzo: :gray[{a['Indirizzo']}, {a['CAP']}, {a['Città']}, {a['Provincia']}]")
+                st.write(f"📱 Cellulare: :gray[{a['Cellulare']}]")
+                st.write(f"✉️ Email: :gray[{a['Email']}]")
 
 # ------------------------ Tesseramento page --------------------------------------------------------------------------
     # Pagina per il tesseramento di un socio.
