@@ -596,8 +596,60 @@ if st.session_state.current_page == "Visualizza affiliazione":                  
 
 # ------------------------ Programma attività page --------------------------------------------------------------------
 
-if st.session_state.current_page == "Programma attività":                                                              # to do
-    pass
+if st.session_state.current_page == "Crea attività":                                                              # to do
+    st.title("➕ Crea attività")
+
+    with st.form(key = "form_crea_attività", clear_on_submit = True, border = True):
+        input_denominazione_CA = st.text_input("Denominazione", max_chars = 100)
+        input_data_CA = st.date_input("Data", min_value = datetime.date(1000, 1, 1), max_value = datetime.date(3000, 1, 1))
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            input_oraInizio_CA = st.time_input("Ora di inizio")
+
+        with c2:
+            input_oraFine_CA = st.time_input("Ora di fine")
+
+        input_descrizione_CA = st.text_area("Descrizione")
+
+        submitted = st.form_submit_button("Submit", use_container_width = True)
+
+        if submitted:
+            err = []
+
+            if input_denominazione_CA == "":
+                err.append("Il campo 'Denominazione' non può essere lasciato vuoto.")
+
+            if input_data_CA < datetime.date.today():
+                err.append("La data inserita è precedente alla data odierna.")
+
+            if input_oraInizio_CA > input_oraFine_CA:
+                err.append("L'ora d'inizio è maggiore dell'ora di fine.")
+
+            if input_descrizione_CA == "":
+                err.append("Il campo 'Descrizione' non può essere lasciato vuoto.")
+
+            if err:
+                for e in err:
+                    st.error(e, icon = "🚨")
+            else:
+                query = text('''INSERT INTO TBL_ATTIVITA (Denominazione, Data, Ora_inizio, Ora_fine, Descrizione)
+                                VALUES (:denominazione, :data, :ora_inizio, :ora_fine, :descrizione)   
+                                ''')
+                
+                with st.session_state.engine.connect() as conn:
+                    conn.execute(query, {
+                        'denominazione': input_denominazione_CA,
+                        'data': input_data_CA,
+                        'ora_inizio': input_oraInizio_CA,
+                        'ora_fine': input_oraFine_CA,
+                        'descrizione': input_descrizione_CA
+                    })
+
+                    conn.commit()
+
+                st.success("L'attività è stata creata.", icon = '✅')
 
 # ------------------------ Visualizza attività page -------------------------------------------------------------------
 
