@@ -36,7 +36,7 @@ policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, speci
         # - Aggiungi membri --------------- ❌⌛
         # - Visualizza membri ------------- ❌⌛
         # - Elimina membri ---------------- ❌⌛
-        # - Crea attività ----------------- ❌
+        # - Crea attività ----------------- ✅
         # - Visualizza attività ----------- ❌
         # - Elimina attività -------------- ❌
         # - Crea comunicazione ------------ ❌

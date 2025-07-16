@@ -12,25 +12,31 @@ from email.mime.text import MIMEText
 
 db_username = st.secrets["DB_USERNAME"]
 
-ss_variables = {
+ss_variables_b1 = {
     "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO"),
     "current_page": "Log in",
     "logged": False,
     "user": "",
     "role": "",
-    "CF_socio": ""
+    "CF_socio": "",
 }
 
-def initialize_var():
-    for var in ss_variables:
+def initialize_var_batch_1():
+    for var, value in ss_variables_b1.items():
         if var not in st.session_state:
-            st.session_state[var] = ss_variables[var]
+            st.session_state[var] = value
+
+def initialize_var_batch_2():
+    if "users" not in st.session_state:
+        st.session_state["users"] = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
 
 # ------------------------ Log out ------------------------
 
 def log_out():
-    for var in ss_variables:
-        st.session_state[var] = ss_variables[var]
+    for var in ss_variables_b1:
+        st.session_state[var] = ss_variables_b1[var]
+
+    st.session_state["users"] = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
 
 # ------------------------ Gestione della navigazione ------------------------
     # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine

@@ -6,7 +6,8 @@ import datetime
 from sqlalchemy import text
 import bcrypt
 
-f.initialize_var()
+f.initialize_var_batch_1()
+f.initialize_var_batch_2()
 
 f.config_sidebar()
 
@@ -203,7 +204,10 @@ if st.session_state.current_page == "Bacheca":                                  
                 else:
                     icon = "⭕"
 
-                st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}", divider = "gray")
+                if c['Categoria'] == 'Segnalazione':
+                    st.subheader(f"{icon} {c['Categoria']} - [{c['Titolo']}]", divider = "gray")
+                else:
+                    st.subheader(f"{icon} {c['Categoria']} - {c['Titolo']}", divider = "gray")
                 
                 c1, c2 = st.columns([0.75, 0.15], vertical_alignment = 'top')
 
@@ -649,7 +653,24 @@ if st.session_state.current_page == "Crea attività":                           
 
                     conn.commit()
 
-                st.success("L'attività è stata creata.", icon = '✅')
+                st.success("L'attività è stata creata con successo.", icon = '✅')
+
+                for u, _ in st.session_state.users:
+                    query = text('''INSERT INTO TBL_COMUNICAZIONI (Titolo, Testo, Categoria, Data_scadenza, Autore, Destinatario)
+                                    VALUES (:titolo, :testo, 'Evento', :data_scadenza, 'st.session_state.user', :destinatario)
+                                    ''')
+                    
+                    with st.session_state.engine.connect() as conn:
+                        conn.execute(query, {
+                            'titolo': input_denominazione_CA,
+                            'testo': f"Ciao {u['Username']}!\nÈ stata programmata una nuova attività che potrebbe interessarti:\n📅 Data: {input_data_CA}\n🕒 Ora di inizio: {input_oraInizio_CA}\n🕒 Ora fine: {input_oraFine_CA}\nSe vuoi saperne di più o partecipare, trovi tutti i dettagli sul gestionale.\nA presto!\nIl team di SPIKKIO",
+                            'data_scadenza': datetime.combine(input_data_CA, input_oraFine_CA),
+                            'destinatario': u['Username']
+                        })
+
+                        conn.commit()
+
+                st.success("Le comunicazioni sono state inserite con successo.", icon = '✅')
 
 # ------------------------ Visualizza attività page -------------------------------------------------------------------
 
