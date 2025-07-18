@@ -838,3 +838,63 @@ if st.session_state.current_page == "Gestisci segnalazioni":
 
             st.write(f":gray[User: {s['Creato_da']}]")
             st.write(f":gray[Data creazione: {s['Data_creazione'].strftime('%d-%m-%Y')} - {s['Data_creazione'].strftime('%H:%M:%S')}]")
+
+if st.session_state.current_page == "Crea comunicazione":
+    st.title("📝 Crea comunicazione")
+
+    with st.container(border = True):
+        input_titolo_CC = st.text_input('Titolo della comunicazione')
+        input_testo_CC = st.text_area('Testo della comunicazione')
+
+        input_categoria_CC = st.selectbox('Categoria', ['Avviso', 'Evento', 'Convocazione'])
+
+        c1, c2 = st.columns([0.2, 0.8])
+
+        input_tipoUtenti_CC = ''
+
+        with c1:
+            input_tipoUtenti_CC = st.multiselect("Seleziona utenti", ['Utenti singoli', 'Ruoli'])
+
+        with c2:
+            query = '''SELECT CF, Nome, Cognome, TU.Username, Ruolo
+                        FROM TBL_ANAGRAFICHE TA, TBL_UTENTI TU, TBL_RUOLI TR
+                        WHERE TA.CF = TU.CF_socio AND
+                            TU.Username = TR.Username;
+                        '''
+            
+            df_utenti = pd.read_sql(query, st.session_state.engine)
+
+            option_array = []
+
+            if 'Ruoli' in input_tipoUtenti_CC:
+                for _, u in df_utenti.iterrows():
+                    option_array.append(u['Ruolo'])
+
+                option_array = list(dict.fromkeys(option_array))
+
+            if 'Utenti singoli' in input_tipoUtenti_CC:
+                for _, u in df_utenti.iterrows():
+                    option_array.append(f"{u['Nome']} {u['Cognome']}")
+
+            st.multiselect("Destinatari", option_array)
+
+        c1, c2 = st.columns([2, 1], vertical_alignment = 'center')
+
+        with c1:
+            input_allegato_CC = st.file_uploader('Allegato', accept_multiple_files = False)
+
+        with c2:
+            input_estensioneFile_CC = st.text_input('Estensione del file', placeholder = "Scrivere solo l'estensione, senza il punto", max_chars = 20)
+
+        submitted = st.button('Submit', use_container_width = True)
+
+        if submitted:
+            err = []
+
+            if input_titolo_CC == '':
+                err.append('Il campo titolo non può rimanere vuoto.')
+
+            if input_testo_CC == '':
+                err.append('Il campo testo non può rimanere vuoto.')
+
+            st.write(input_allegato_CC)
