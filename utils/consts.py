@@ -21,7 +21,7 @@ province_sigle = [
 policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, special = 1)
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
-    # Pagine                               6 / 34 + ?
+    # Pagine                               9 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌⌛
@@ -39,7 +39,7 @@ policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, speci
         # - Crea attività ----------------- ✅
         # - Visualizza attività ----------- ❌
         # - Elimina attività -------------- ❌
-        # - Crea comunicazione ------------ ❌
+        # - Crea comunicazione ------------ ✅ da fare modifiche su chi può mandare comunicazioni a chi
         # - Crea team --------------------- ❌⌛
         # - Modifica teams ---------------- ❌⌛
         # - Visualizza teams -------------- ❌⌛
