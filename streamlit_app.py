@@ -170,7 +170,7 @@ if st.session_state.current_page == "Cambia credenziali":
 # ------------------------ Bacheca page -------------------------------------------------------------------------------
     # Pagina principale dove l'utente vedrà i propri messaggi in bacheca
 
-if st.session_state.current_page == "Bacheca":                                                                         # to do
+if st.session_state.current_page == "Bacheca":
     st.title("📌 Bacheca")
 
     with st.container(border = True):
@@ -254,7 +254,7 @@ if st.session_state.current_page == "Bacheca":                                  
     # Pagina dove è possibile inserire nuovi soci all'interno del database utilizzando tutti i campi
     # necessari, con tanto di controlli su ogni campo
 
-if st.session_state.current_page == "Inserisci anagrafica":                                                            # complete
+if st.session_state.current_page == "Inserisci anagrafica":
     st.title("➕ Inserisci anagrafica")
     
     with st.form(key = "form_inserisci_anagrafica", clear_on_submit = True, enter_to_submit = False):
