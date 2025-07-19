@@ -21,11 +21,11 @@ province_sigle = [
 policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, special = 1)
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
-    # Pagine                               9 / 34 + ?
+    # Pagine                               10 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌⌛
-        # - Visualizza tessere ------------ ❌
+        # - Visualizza tessere ------------ ✅
         # - Visualizza team --------------- ❌
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌

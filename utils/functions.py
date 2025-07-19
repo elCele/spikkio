@@ -7,6 +7,10 @@ from sqlalchemy import text
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from PIL import Image, ImageDraw, ImageFont
+import barcode
+from barcode.writer import ImageWriter
+import io
 
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
@@ -118,3 +122,75 @@ def send_email(subject, body, to_email, from_email, from_password, smtp_server =
         print(f"Email inviata correttamente a {to_email}")
     except Exception as e:
         print(f"Errore durante l'invio dell'email: {e}")
+
+# ------------------------ Creazione tessera virtuale ------------------------
+
+def build_tessera(nome_titolare, cognome_titolare, cf_titolare, data_scadenza, cod_tessera):
+    sfondo_tessera_path = 'img/card_back.png'
+    logo_limone_path = 'img/SPIKKIO_logo.png'
+
+    try:
+        sfondo = Image.open(sfondo_tessera_path).convert("RGBA")
+        width, height = sfondo.size
+
+        logo = Image.open(logo_limone_path).convert("RGBA")
+        logo_height = int(height * 1.2)
+        logo = logo.resize((int(logo.width * (logo_height / logo.height)), logo_height), Image.Resampling.LANCZOS)
+        logo_x = int(width / 2 - 150)
+        logo_y = 30
+        sfondo.paste(logo, (logo_x, logo_y), logo)
+
+        buffer_barcode = io.BytesIO()
+        Code128 = barcode.get_barcode_class('code128')
+        code128_instance = Code128(cod_tessera, writer = ImageWriter())
+        code128_instance.write(buffer_barcode)
+        buffer_barcode.seek(0)
+
+        barcode_img = Image.open(buffer_barcode).convert("RGBA")
+
+        barcode_target_width = int(width * 0.4)
+        barcode_target_height = int(barcode_img.height * (barcode_target_width / barcode_img.width))
+        barcode_img = barcode_img.resize((barcode_target_width, barcode_target_height), Image.Resampling.LANCZOS)
+
+        barcode_img = barcode_img.rotate(90, expand = True)
+
+        barcode_x = width - barcode_img.width - 20
+        barcode_y = 100
+        sfondo.paste(barcode_img, (barcode_x, barcode_y), barcode_img)
+
+        draw = ImageDraw.Draw(sfondo)
+
+        rect_x1, rect_y1 = 10, int(height - 105)
+        rect_x2, rect_y2 = int(width / 2 + 20), int(height - 10)
+        radius = 15
+
+        fill_color = (256, 256, 256, 200)
+
+        overlay = Image.new('RGBA', sfondo.size, (0,0,0,0))
+
+        draw_overlay = ImageDraw.Draw(overlay)
+        draw_overlay.rounded_rectangle((rect_x1, rect_y1, rect_x2, rect_y2), radius = radius, fill = fill_color)
+
+        sfondo.paste(overlay, (0, 0), overlay)
+
+        try:
+            font_dati = ImageFont.truetype("fonts/Montserrat-Bold.ttf", 15)
+        except IOError:
+            font_dati = ImageFont.load_default()
+
+        text_color = (0, 0, 0, 255)
+
+        draw.text((20, height - 95), f"{nome_titolare} {cognome_titolare}", font = font_dati, fill = text_color)
+        draw.text((20, height - 65), f"{cf_titolare}", font = font_dati, fill = text_color)
+        draw.text((20, height - 35), f"Data scadenza:  {data_scadenza}", font = font_dati, fill = text_color)
+
+        img_buffer = io.BytesIO()
+        sfondo.save(img_buffer, format="PNG")
+        img_buffer.seek(0)
+
+        return img_buffer
+
+    except FileNotFoundError as e:
+        return None
+    except Exception as e:
+        return None

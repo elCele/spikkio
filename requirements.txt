@@ -8,3 +8,5 @@ bcrypt
 secure-smtplib
 password_strength
 python-magic
+Pillow
+python-barcode
