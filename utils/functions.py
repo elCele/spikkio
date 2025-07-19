@@ -11,9 +11,10 @@ from email.mime.text import MIMEText
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
 db_username = st.secrets["DB_USERNAME"]
+db_password = st.secrets["DB_PASSWORD"]
 
 ss_variables_b1 = {
-    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:@localhost/SPIKKIO"),
+    "engine": create_engine(f"mysql+mysqlconnector://{db_username}:{db_password}@100.64.25.18/SPIKKIO"),
     "current_page": "Log in",
     "logged": False,
     "user": "",
