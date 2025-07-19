@@ -12,7 +12,7 @@ f.initialize_var_batch_2()
 f.config_sidebar()
 
 st.set_page_config(
-        page_title = st.session_state.current_page,
+        page_title = f"SPIKKIO - {st.session_state.current_page}",
         page_icon = "🍋",
         layout = "wide",
         initial_sidebar_state = "auto"
@@ -40,6 +40,17 @@ if st.session_state.current_page == "Log in":
             else:
                 st.session_state.CF_socio = user_row.iloc[0]['CF_socio']
 
+                query = '''SELECT CF_socio
+                               FROM TBL_PARTECIPAZIONI_TEAM
+                               '''
+                    
+                df_utenti_team = pd.read_sql(query, st.session_state.engine)
+
+                for _, ut in df_utenti_team.iterrows():
+                    if st.session_state.CF_socio == ut['CF_socio']:
+                        st.session_state.inTeam = True
+                        break
+
                 # Prendi l'hash salvato nel DB
                 hashed_password = user_row.iloc[0]['Password_hash'].strip()
 
@@ -63,6 +74,7 @@ if st.session_state.current_page == "Log in":
                             )
 
                         st.rerun()
+
                 else:
                     st.error("Password errata", icon = "🚨")
     

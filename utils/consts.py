@@ -26,25 +26,25 @@ policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, speci
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌⌛
         # - Visualizza tessere ------------ ❌
-        # - Visualizza team --------------- ❌⌛
+        # - Visualizza team --------------- ❌
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌
         # - Effettua segnalazioni --------- ✅
         # - Cambia credenziali ------------ ✅
-        # - Visualizza team --------------- ❌⌛
-        # - Modifica team ----------------- ❌⌛
-        # - Aggiungi membri --------------- ❌⌛
-        # - Visualizza membri ------------- ❌⌛
-        # - Elimina membri ---------------- ❌⌛
+        # - Visualizza team --------------- ❌
+        # - Modifica team ----------------- ❌
+        # - Aggiungi membri --------------- ❌
+        # - Visualizza membri ------------- ❌
+        # - Elimina membri ---------------- ❌
         # - Crea attività ----------------- ✅
         # - Visualizza attività ----------- ❌
         # - Elimina attività -------------- ❌
         # - Crea comunicazione ------------ ✅ da fare modifiche su chi può mandare comunicazioni a chi
-        # - Crea team --------------------- ❌⌛
-        # - Modifica teams ---------------- ❌⌛
-        # - Visualizza teams -------------- ❌⌛
-        # - Disattiva team ---------------- ❌⌛
-        # - Visualizza iscrizioni --------- ❌⌛
+        # - Crea team --------------------- ❌
+        # - Modifica teams ---------------- ❌
+        # - Visualizza teams -------------- ❌
+        # - Disattiva team ---------------- ❌
+        # - Visualizza iscrizioni --------- ❌
         # - Aggiungi ente ----------------- ❌
         # - Visualizza enti --------------- ❌
         # - Crea affiliazione ------------- ❌
@@ -64,10 +64,13 @@ class Pagina:
         self.in_expander = in_expander
 
     def build(self):
-        if self.in_expander:
-            st.button(label = self.nome, use_container_width = True, icon = self.icona, on_click = lambda: st.session_state.update(current_page = self.nome))
+        if self.nome == 'Visualizza team' and self.icona == '👥' and not st.session_state.inTeam:
+            return
         else:
-            st.sidebar.button(label = self.nome, use_container_width = True, icon = self.icona, on_click = lambda: st.session_state.update(current_page = self.nome))
+            if self.in_expander:
+                st.button(label = self.nome, use_container_width = True, icon = self.icona, on_click = lambda: st.session_state.update(current_page = self.nome))
+            else:
+                st.sidebar.button(label = self.nome, use_container_width = True, icon = self.icona, on_click = lambda: st.session_state.update(current_page = self.nome))
 
 class Expander:
     def __init__(self, nome, icona, in_expander, pagine):
@@ -93,7 +96,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -128,7 +131,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -153,7 +156,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -190,7 +193,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -219,7 +222,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),
@@ -286,7 +289,7 @@ users = {
         Expander("Dati socio", "🗂️", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
-            Pagina("Visualizza team", "👥", True),      # mostrare solo se appartiene ad un team
+            Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
             Pagina("Visualizza convocazioni", "📣", True)
         ]),

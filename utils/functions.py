@@ -19,6 +19,7 @@ ss_variables_b1 = {
     "user": "",
     "role": "",
     "CF_socio": "",
+    "inTeam": False
 }
 
 def initialize_var_batch_1():
@@ -49,7 +50,6 @@ def config_sidebar():
     if st.session_state.logged:
 
         st.sidebar.subheader(f":red[User:] {st.session_state.user}")
-        st.sidebar.subheader(f":red[Qualifica:] ")
         st.sidebar.subheader(f":red[Ruolo:] {st.session_state.role}", divider = "red")
 
         if st.session_state.role in c.users:
