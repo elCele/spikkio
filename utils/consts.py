@@ -93,15 +93,12 @@ users = {
     "Utente standard": [        # ----------------------------------- Utente standard -----------------------------------
         Pagina("Bacheca", "📌", False),
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
+            Pagina("Visualizza convocazioni", "📣", True),
             Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
@@ -128,16 +125,13 @@ users = {
             ]),
         ]),
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza convocazioni", "📣", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -153,16 +147,13 @@ users = {
             Pagina("Disattiva team", "➖", True)
         ]),
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza convocazioni", "📣", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -190,16 +181,13 @@ users = {
             ])
         ]),
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza convocazioni", "📣", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -219,16 +207,13 @@ users = {
             Pagina("Visualizza tessere", "🔍", True)
         ]),
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza convocazioni", "📣", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],
@@ -286,16 +271,13 @@ users = {
 
         # aggiungere il resto
 
-        Expander("Dati socio", "🗂️", False, [
+        Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
             Pagina("Visualizza tessere", "🪪", True),
             Pagina("Visualizza team", "👥", True),
             Pagina("Visualizza attività", "📅", True),
-            Pagina("Visualizza convocazioni", "📣", True)
-        ]),
-
-        Expander("Profilo", "👤", False, [
-            Pagina("Effettua segnalazioni", "📢", True),
+            Pagina("Visualizza convocazioni", "📣", True),
+            Pagina("Effettua segnalazioni", "📢", True),           
             Pagina("Cambia credenziali", "🔄️", True)
         ])
     ],

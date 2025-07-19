@@ -545,70 +545,32 @@ if st.session_state.current_page == "Visualizza anagrafiche":                   
 if st.session_state.current_page == "Tesseramento socio":                                                                    # to do
     st.title("🪪 Tesseramento")
 
-# ------------------------ Inserisci tipo tessera page ----------------------------------------------------------------
-
-if st.session_state.current_page == "Inserisci tipo tessera":                                                          # to do
-    pass
-
 # ------------------------ Visualizza tessere page --------------------------------------------------------------------
 
 if st.session_state.current_page == "Visualizza tessere":                                                              # to do
-    pass
+    st.title('🪪 Visualizza tessere')
 
-# ------------------------ Inserisci tipo qualifica page --------------------------------------------------------------
-
-if st.session_state.current_page == "Inserisci tipo qualifica":                                                        # to do
-    pass
-
-# ------------------------ Visualizza qualifiche page -----------------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza qualifiche":                                                           # to do
-    pass
-
-# ------------------------ Programma riunione direttivo page ----------------------------------------------------------
-
-if st.session_state.current_page == "Programma riunione direttivo":                                                    # to do
-    pass
-
-# ------------------------ Visualizza riunioni direttivo page ---------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza riunioni direttivo":                                                   # to do
-    pass
-
-# ------------------------ Inserisci presenze direttivo ---------------------------------------------------------------
-
-if st.session_state.current_page == "Inserisci presenze direttivo":                                                    # to do
-    pass
-
-# ------------------------ Programma riunioni assemblea page ----------------------------------------------------------
-
-if st.session_state.current_page == "Programma riunione assemblea":                                                    # to do
-    pass
-
-# ------------------------ Visualizza riunioni assemblea page ---------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza riunioni assemblea":                                                   # to do
-    pass
-
-# ------------------------ Inserisci ente page ------------------------------------------------------------------------
-
-if st.session_state.current_page == "Inserisci ente":                                                                  # to do
-    pass
-
-# ------------------------ Visualizza enti ----------------------------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza enti":                                                                 # to do
-    pass
-
-# ------------------------ Inserisci affiliazione page ----------------------------------------------------------------
-
-if st.session_state.current_page == "Inserisci affiliazione":                                                          # to do
-    pass
-
-# ------------------------ Visualizza affiliazione page ---------------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza affiliazione":                                                         # to do
-    pass
+    with st.container(height=100, border=True):
+        # Applica il CSS per centrare il testo
+        st.markdown(
+            """
+            <style>
+            .centered-text {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%; /* Occupa l'altezza del container */
+                font-size: 20px;
+                color: gray;
+                padding-top: 20px;
+            }
+            </style>
+            <div class="centered-text">
+                Nessuna tessera trovata
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # ------------------------ Programma attività page --------------------------------------------------------------------
 
@@ -684,15 +646,7 @@ if st.session_state.current_page == "Crea attività":                           
 
                 st.success("Le comunicazioni sono state inserite con successo.", icon = '✅')
 
-# ------------------------ Visualizza attività page -------------------------------------------------------------------
-
-if st.session_state.current_page == "Visualizza attività":                                                             # to do
-    pass
-
-# ------------------------ Gestisci prenotazioni attività page --------------------------------------------------------
-
-if st.session_state.current_page == "Gestisci prenotazioni attività":                                                  # to do
-    pass
+# ------------------------ Effettua segnalazioni ----------------------------------------------------------------------
 
 if st.session_state.current_page == "Effettua segnalazioni":                                                  # to do
     st.title("📢 Effettua segnalazioni")
@@ -730,6 +684,8 @@ if st.session_state.current_page == "Effettua segnalazioni":                    
                     conn.commit()
 
             st.success("La segnalazione è stata inviata correttamente", icon = "✅")
+
+# ------------------------ Gestisci segnalazioni ----------------------------------------------------------------------
 
 if st.session_state.current_page == "Gestisci segnalazioni":
     st.title("🛠️ Gestisci segnalazioni")
@@ -850,6 +806,8 @@ if st.session_state.current_page == "Gestisci segnalazioni":
 
             st.write(f":gray[User: {s['Creato_da']}]")
             st.write(f":gray[Data creazione: {s['Data_creazione'].strftime('%d-%m-%Y')} - {s['Data_creazione'].strftime('%H:%M:%S')}]")
+
+# ------------------------ Crea comunicazione -------------------------------------------------------------------------
 
 if st.session_state.current_page == "Crea comunicazione":
     st.title("📝 Crea comunicazione")
