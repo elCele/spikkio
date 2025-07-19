@@ -655,20 +655,19 @@ if st.session_state.current_page == "Crea attività":
 
                 st.success("L'attività è stata creata con successo.", icon = '✅')
 
-                for u, _ in st.session_state.users:
-                    query = text('''INSERT INTO TBL_COMUNICAZIONI (Titolo, Testo, Categoria, Data_scadenza, Autore, Destinatario)
-                                    VALUES (:titolo, :testo, 'Evento', :data_scadenza, 'st.session_state.user', :destinatario)
-                                    ''')
-                    
-                    with st.session_state.engine.connect() as conn:
+                query = text('''INSERT INTO TBL_COMUNICAZIONI (Titolo, Testo, Categoria, Data_scadenza, Autore, Destinatario)
+                                VALUES (:titolo, :testo, 'Evento', :data_scadenza, :autore, :destinatario)
+                                ''')
+
+                with st.session_state.engine.begin() as conn:
+                    for _, u in st.session_state.users.iterrows():
                         conn.execute(query, {
                             'titolo': input_denominazione_CA,
                             'testo': f"Ciao {u['Username']}!\nÈ stata programmata una nuova attività che potrebbe interessarti:\n📅 Data: {input_data_CA}\n🕒 Ora di inizio: {input_oraInizio_CA}\n🕒 Ora fine: {input_oraFine_CA}\nSe vuoi saperne di più o partecipare, trovi tutti i dettagli sul gestionale.\nA presto!\nIl team di SPIKKIO",
-                            'data_scadenza': datetime.combine(input_data_CA, input_oraFine_CA),
+                            'data_scadenza': datetime.datetime.combine(input_data_CA, input_oraFine_CA),
+                            'autore': st.session_state.user,
                             'destinatario': u['Username']
                         })
-
-                        conn.commit()
 
                 st.success("Le comunicazioni sono state inserite con successo.", icon = '✅')
 
@@ -965,3 +964,9 @@ if st.session_state.current_page == "Crea comunicazione":
 
                     st.success('Comunicazioni inserite con successo.', icon = '✅')
             
+if st.session_state.current_page == "Visualizza attività":
+    st.title("📅 Visualizza attività")
+
+    query = '''SELECT *
+               FROM TBL_ATTIVITA
+               '''
