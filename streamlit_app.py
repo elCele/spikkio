@@ -405,7 +405,7 @@ if st.session_state.current_page == "Inserisci anagrafica":                     
     # Pulsanti per aggiornare.
     # Pulsante per scaricare .pdf
 
-if st.session_state.current_page == "Visualizza anagrafiche":                                                          # to do
+if st.session_state.current_page == "Visualizza anagrafiche":
     st.title("🔍 Visualizza anagrafiche")
 
     if "master" in st.session_state.role:
@@ -542,12 +542,12 @@ if st.session_state.current_page == "Visualizza anagrafiche":                   
 # ------------------------ Tesseramento page --------------------------------------------------------------------------
     # Pagina per il tesseramento di un socio.
 
-if st.session_state.current_page == "Tesseramento socio":                                                                    # to do
+if st.session_state.current_page == "Tesseramento socio":
     st.title("🪪 Tesseramento")
 
 # ------------------------ Visualizza tessere page --------------------------------------------------------------------
 
-if st.session_state.current_page == "Visualizza tessere":                                                              # to do
+if st.session_state.current_page == "Visualizza tessere":
     st.title('🪪 Visualizza tessere')
     
     query = '''SELECT *
@@ -600,7 +600,7 @@ if st.session_state.current_page == "Visualizza tessere":                       
 
 # ------------------------ Programma attività page --------------------------------------------------------------------
 
-if st.session_state.current_page == "Crea attività":                                                              # to do
+if st.session_state.current_page == "Crea attività":
     st.title("➕ Crea attività")
 
     with st.form(key = "form_crea_attività", clear_on_submit = True, border = True):
@@ -674,7 +674,7 @@ if st.session_state.current_page == "Crea attività":                           
 
 # ------------------------ Effettua segnalazioni ----------------------------------------------------------------------
 
-if st.session_state.current_page == "Effettua segnalazioni":                                                  # to do
+if st.session_state.current_page == "Effettua segnalazioni":
     st.title("📢 Effettua segnalazioni")
 
     with st.form("form_effettua_segnalazioni", clear_on_submit = True):
