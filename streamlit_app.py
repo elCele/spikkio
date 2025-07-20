@@ -224,7 +224,7 @@ if st.session_state.current_page == "Bacheca":
                 c1, c2 = st.columns([0.75, 0.15], vertical_alignment = 'top')
 
                 with c1:
-                    st.write(f"{c['Testo']}")
+                    st.markdown(f"{c['Testo']}", unsafe_allow_html = True)
 
                 with c2:
                     if c['Stato'] == 'Non letta':
@@ -606,7 +606,7 @@ if st.session_state.current_page == "Crea attività":
 
     with st.form(key = "form_crea_attività", clear_on_submit = True, border = True):
         input_denominazione_CA = st.text_input("Denominazione", max_chars = 100)
-        input_data_CA = st.date_input("Data", min_value = datetime.date(1000, 1, 1), max_value = datetime.date(3000, 1, 1))
+        input_data_CA = st.date_input("Data", min_value = datetime.date(1000, 1, 1), max_value = datetime.date(3000, 1, 1), format = 'DD/MM/YYYY')
 
         c1, c2 = st.columns(2)
 
@@ -615,6 +615,9 @@ if st.session_state.current_page == "Crea attività":
 
         with c2:
             input_oraFine_CA = st.time_input("Ora di fine")
+
+        input_max_partecipanti_CA = st.number_input("Numero massimo di partecipanti", value = 0, min_value = 0, step = 1)
+        st.write(":gray[Lasciare 0 se non c'è limite di partecipanti]")
 
         input_descrizione_CA = st.text_area("Descrizione")
 
@@ -635,12 +638,15 @@ if st.session_state.current_page == "Crea attività":
             if input_descrizione_CA == "":
                 err.append("Il campo 'Descrizione' non può essere lasciato vuoto.")
 
+            if input_max_partecipanti_CA == 0:
+                input_max_partecipanti_CA = None
+
             if err:
                 for e in err:
                     st.error(e, icon = "🚨")
             else:
-                query = text('''INSERT INTO TBL_ATTIVITA (Denominazione, Data, Ora_inizio, Ora_fine, Descrizione)
-                                VALUES (:denominazione, :data, :ora_inizio, :ora_fine, :descrizione)   
+                query = text('''INSERT INTO TBL_ATTIVITA (Denominazione, Data, Ora_inizio, Ora_fine, Max_partecipanti, Descrizione)
+                                VALUES (:denominazione, :data, :ora_inizio, :ora_fine, :max_partecipanti, :descrizione)   
                                 ''')
                 
                 with st.session_state.engine.connect() as conn:
@@ -649,6 +655,7 @@ if st.session_state.current_page == "Crea attività":
                         'data': input_data_CA,
                         'ora_inizio': input_oraInizio_CA,
                         'ora_fine': input_oraFine_CA,
+                        'max_partecipanti': input_max_partecipanti_CA,
                         'descrizione': input_descrizione_CA
                     })
 
@@ -664,7 +671,7 @@ if st.session_state.current_page == "Crea attività":
                     for _, u in st.session_state.users.iterrows():
                         conn.execute(query, {
                             'titolo': input_denominazione_CA,
-                            'testo': f"Ciao {u['Username']}!\nÈ stata programmata una nuova attività che potrebbe interessarti:\n📅 Data: {input_data_CA}\n🕒 Ora di inizio: {input_oraInizio_CA}\n🕒 Ora fine: {input_oraFine_CA}\nSe vuoi saperne di più o partecipare, trovi tutti i dettagli sul gestionale.\nA presto!\nIl team di SPIKKIO",
+                            'testo': f"Ciao {u['Username']}! <br> È stata programmata una nuova attività che potrebbe interessarti: <br> <br> 📅 Data: {input_data_CA} <br> 🕒 Ora di inizio: {input_oraInizio_CA} <br> 🕒 Ora fine: {input_oraFine_CA} <br> <br> Se vuoi saperne di più o partecipare, trovi tutti i dettagli sul gestionale. <br> A presto! <br> Il team di SPIKKIO",
                             'data_scadenza': datetime.datetime.combine(input_data_CA, input_oraFine_CA),
                             'autore': st.session_state.user,
                             'destinatario': u['Username']
@@ -965,6 +972,8 @@ if st.session_state.current_page == "Crea comunicazione":
 
                     st.success('Comunicazioni inserite con successo.', icon = '✅')
             
+# ------------------------ Visualizza attività ------------------------------------------------------------------------
+
 if st.session_state.current_page == "Visualizza attività":
     st.title("📅 Visualizza attività")
 
@@ -1007,10 +1016,11 @@ if st.session_state.current_page == "Visualizza attività":
         if df_attività.empty:
             st.info("🔍 Nessuna attività prenotata trovata con i filtri selezionati.")
 
-    query = '''SELECT Attività, COUNT(*)
-                FROM TBL_PRENOTAZIONI
-                GROUP BY Attività
-                '''
+    query = '''SELECT Attività, COUNT(*) AS num_prenotazioni
+           FROM TBL_PRENOTAZIONI
+           GROUP BY Attività
+        '''
+    df_num_prenotazioni = pd.read_sql(query, st.session_state.engine)
 
     for _, a in df_attività.iterrows():
         with st.container(border = True):
@@ -1033,14 +1043,24 @@ if st.session_state.current_page == "Visualizza attività":
                         isPrenotata = True
                         break
 
-                if not isPrenotata:
-                    prenota = st.button('Prenota', use_container_width = True, key = f"{a['Denominazione']} - prenota")
+                riga_prenotazioni = df_num_prenotazioni[df_num_prenotazioni['Attività'] == a['Denominazione']]
+                num_prenotazioni = int(riga_prenotazioni['num_prenotazioni'].iloc[0]) if not riga_prenotazioni.empty else 0
 
-                    if prenota:
-                        query = text('''INSERT INTO TBL_PRENOTAZIONI (CF_socio, Attività)
-                                        VALUES (:cf, :attività)
-                                        ''')
-                        
+                max_partecipanti = a['Max_partecipanti']
+
+                if max_partecipanti is not None and not pd.isna(max_partecipanti):
+                    max_partecipanti = int(max_partecipanti)
+                    st.write(f":gray[{num_prenotazioni}/{max_partecipanti} posti occupati]")
+                else:
+                    st.write(f":gray[{num_prenotazioni} partecipanti]")
+
+                if isPrenotata:
+                    st.write(":red[Sei prenotato!]")
+
+                    if st.button('Annulla prenotazione', icon = '❌', use_container_width=True, key=f"{a['Denominazione']} - annulla"):
+                        query = text('''DELETE FROM TBL_PRENOTAZIONI
+                                        WHERE CF_socio = :cf AND Attività = :attività''')
+
                         with st.session_state.engine.connect() as conn:
                             conn.execute(query, {
                                 'cf': st.session_state.CF_socio,
@@ -1050,15 +1070,25 @@ if st.session_state.current_page == "Visualizza attività":
                             conn.commit()
 
                         st.rerun()
+
+                    if st.button('Aggiungi al calendario', icon='📆', use_container_width=True, key=f"{a['Denominazione']} - calendar"):
+                        ics_file = f.genera_ics(a)
+                        st.download_button("Scarica .ics", data=ics_file, file_name=f"{a['Denominazione']}.ics")
+
+                elif max_partecipanti is None or pd.isna(max_partecipanti) or num_prenotazioni < max_partecipanti:
+                    prenota = st.button('Prenota', use_container_width=True, key=f"{a['Denominazione']} - prenota")
+
+                    if prenota:
+                        query = text('''INSERT INTO TBL_PRENOTAZIONI (CF_socio, Attività)
+                                        VALUES (:cf, :attività)''')
+
+                        with st.session_state.engine.connect() as conn:
+                            conn.execute(query, {
+                                'cf': st.session_state.CF_socio,
+                                'attività': a['Denominazione']
+                            })
+                            conn.commit()
+
+                        st.rerun()
                 else:
-                    st.write(":red[Sei prenotato!]")
-
-                    ics_bytes = f.genera_ics(a['Denominazione'],a['Descrizione'], a['Data'], a['Ora_inizio'], a['Ora_fine'])
-
-                    st.download_button(
-                        label = "📆 Aggiungi al calendario",
-                        data = ics_bytes,
-                        file_name = f"{a['Denominazione']}.ics",
-                        mime = "text/calendar",
-                        use_container_width = True
-                    )
+                    st.write(":red[Posti esauriti per questa attività.]")
