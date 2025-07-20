@@ -11,6 +11,9 @@ from PIL import Image, ImageDraw, ImageFont
 import barcode
 from barcode.writer import ImageWriter
 import io
+import pytz
+from icalendar import Calendar, Event
+import datetime
 
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
@@ -194,3 +197,25 @@ def build_tessera(nome_titolare, cognome_titolare, cf_titolare, data_scadenza, c
         return None
     except Exception as e:
         return None
+
+# ------------------------ Creazione file .ics per inserire evento nel calendario ------------------------
+
+def genera_ics(nome_evento, descrizione, data_evento, ora_inizio, ora_fine, luogo="Luogo da definire"):
+    tz = pytz.timezone('Europe/Rome')
+    inizio = datetime.datetime.combine(data_evento, (datetime.datetime.min + ora_inizio).time())
+    fine = datetime.datetime.combine(data_evento, (datetime.datetime.min + ora_fine).time())
+
+    inizio = tz.localize(inizio)
+    fine = tz.localize(fine)
+
+    cal = Calendar()
+    event = Event()
+    event.add('summary', nome_evento)
+    event.add('description', descrizione)
+    event.add('dtstart', inizio)
+    event.add('dtend', fine)
+    event.add('location', luogo)
+    event.add('dtstamp', datetime.datetime.now(tz=tz))
+    cal.add_component(event)
+
+    return cal.to_ical()

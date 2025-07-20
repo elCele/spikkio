@@ -245,7 +245,8 @@ if st.session_state.current_page == "Bacheca":
                         data = c['Allegato'],
                         file_name = f"{c['ID_comunicazione']}_allegato.{c['Estensione_allegato']}",
                         mime = "application/octet-stream",
-                        icon = "📁"
+                        icon = "📁",
+                        key = f"{c['ID_comunicazione']} - file_button"
                     )
 
                 st.write(f":gray[Data pubblicazione: {c['Data_pubblicazione'].strftime('%d-%m-%Y')} - {c['Data_pubblicazione'].strftime('%H:%M:%S')}]")
@@ -967,6 +968,97 @@ if st.session_state.current_page == "Crea comunicazione":
 if st.session_state.current_page == "Visualizza attività":
     st.title("📅 Visualizza attività")
 
-    query = '''SELECT *
-               FROM TBL_ATTIVITA
-               '''
+    c1, c2, c3 = st.columns([0.6, 0.2, 0.2], vertical_alignment = 'bottom')
+
+    with c1:
+        filter_denominazione_VA = st.text_input("Denominazione attività")
+
+    with c2:
+        filter_ordine_VA = st.selectbox("Ordine", ['Decrescente', 'Crescente'])
+
+    with c3:
+        filter_solo_prenotate_VA = st.toggle('Mostra solo prenotate')
+
+    if filter_ordine_VA == 'Decrescente':
+        filter_ordine_VA = 'DESC'
+    elif filter_ordine_VA == 'Crescente':
+        filter_ordine_VA = 'ASC'
+
+    query = f'''SELECT *
+                FROM TBL_ATTIVITA
+                WHERE CURRENT_TIMESTAMP < TIMESTAMP(Data, Ora_fine) AND
+                    Denominazione LIKE '%{filter_denominazione_VA}%'
+                ORDER BY Data {filter_ordine_VA}, Ora_inizio
+                '''
+    
+    df_attività = pd.read_sql(query, st.session_state.engine)
+
+    query = f'''SELECT *
+                FROM TBL_PRENOTAZIONI
+                WHERE CF_socio = '{st.session_state.CF_socio}'
+                '''
+    
+    df_attività_prenotate = pd.read_sql(query, st.session_state.engine)
+
+    if filter_solo_prenotate_VA:
+        attività_prenotate_set = set(df_attività_prenotate['Attività'])
+        df_attività = df_attività[df_attività['Denominazione'].isin(attività_prenotate_set)]
+
+        if df_attività.empty:
+            st.info("🔍 Nessuna attività prenotata trovata con i filtri selezionati.")
+
+    query = '''SELECT Attività, COUNT(*)
+                FROM TBL_PRENOTAZIONI
+                GROUP BY Attività
+                '''
+
+    for _, a in df_attività.iterrows():
+        with st.container(border = True):
+            st.subheader(a['Denominazione'])
+
+            c1, c2, c3 = st.columns([0.3, 0.4, 0.3], vertical_alignment = 'center')
+
+            with c1:
+                st.write(f"📆 {a['Data'].strftime('%d-%m-%Y')}")
+                st.write(f"🕑 {(datetime.datetime.min + a['Ora_inizio']).time().strftime('%H:%M')} - {(datetime.datetime.min + a['Ora_fine']).time().strftime('%H:%M')}")
+
+            with c2:
+                st.write(f":gray[{a['Descrizione']}]")
+
+            with c3:
+                isPrenotata = False
+
+                for _, ap in df_attività_prenotate.iterrows():
+                    if ap['Attività'] == a['Denominazione']:
+                        isPrenotata = True
+                        break
+
+                if not isPrenotata:
+                    prenota = st.button('Prenota', use_container_width = True, key = f"{a['Denominazione']} - prenota")
+
+                    if prenota:
+                        query = text('''INSERT INTO TBL_PRENOTAZIONI (CF_socio, Attività)
+                                        VALUES (:cf, :attività)
+                                        ''')
+                        
+                        with st.session_state.engine.connect() as conn:
+                            conn.execute(query, {
+                                'cf': st.session_state.CF_socio,
+                                'attività': a['Denominazione']
+                            })
+
+                            conn.commit()
+
+                        st.rerun()
+                else:
+                    st.write(":red[Sei prenotato!]")
+
+                    ics_bytes = f.genera_ics(a['Denominazione'],a['Descrizione'], a['Data'], a['Ora_inizio'], a['Ora_fine'])
+
+                    st.download_button(
+                        label = "📆 Aggiungi al calendario",
+                        data = ics_bytes,
+                        file_name = f"{a['Denominazione']}.ics",
+                        mime = "text/calendar",
+                        use_container_width = True
+                    )

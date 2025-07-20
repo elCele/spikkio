@@ -10,3 +10,5 @@ password_strength
 python-magic
 Pillow
 python-barcode
+icalendar
+pytz
