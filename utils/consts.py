@@ -24,7 +24,7 @@ policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, speci
     # Pagine                               11 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
-        # - Visualizza contributi --------- ❌⌛
+        # - Visualizza contributi --------- ❌
         # - Visualizza tessere ------------ ✅
         # - Visualizza team --------------- ❌
         # - Visualizza attività ----------- ❌

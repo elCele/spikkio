@@ -56,8 +56,9 @@ def config_sidebar():
 
     if st.session_state.logged:
 
-        st.sidebar.subheader(f":red[User:] {st.session_state.user}")
-        st.sidebar.subheader(f":red[Ruolo:] {st.session_state.role}", divider = "red")
+        with st.sidebar.container(border = True):
+            st.badge(f"{st.session_state.user}", icon = '👤', color = 'primary')
+            st.badge(f"{st.session_state.role}", color = 'primary')
 
         if st.session_state.role in c.users:
             pagine_per_utente = c.users[st.session_state.role]
