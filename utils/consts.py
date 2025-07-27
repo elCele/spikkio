@@ -40,7 +40,7 @@ policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, speci
         # - Visualizza attività ----------- ✅
         # - Elimina attività -------------- ❌
         # - Crea comunicazione ------------ ✅ da fare modifiche su chi può mandare comunicazioni a chi
-        # - Crea team --------------------- ❌
+        # - Crea team --------------------- ✅
         # - Modifica teams ---------------- ❌
         # - Visualizza teams -------------- ❌
         # - Disattiva team ---------------- ❌
