@@ -1,5 +1,5 @@
 import streamlit as st
-import utils.functions as f
+from utils import functions as f, consts as c
 
 from views import (
     page_404,

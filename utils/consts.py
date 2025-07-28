@@ -20,6 +20,56 @@ province_sigle = [
 
 policy = PasswordPolicy.from_names(length = 8, uppercase = 1, numbers = 1, special = 1)
 
+# ------------------------ Custom css ------------------------
+
+custom_css = """
+<style>
+/* Reset di base per evitare margini o padding indesiderati sul corpo principale della pagina */
+.st-emotion-cache-1629p8f { /* Questo è un selettore comune per il main block di Streamlit, varia tra le versioni */
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+/* Selettore per l'elemento del container effettivo.
+   Questo dovrebbe essere il div che contiene il tuo contenuto e che ha la classe st-key-user_info_container.
+   Lo screenshot precedente mostrava che st-key-user_info_container si trovava sul data-testid="stVerticalBlock".
+   Applichiamo il background direttamente lì con !important.
+*/
+[data-testid="stVerticalBlock"].st-key-user_info_container {
+    background-color: #faf7f0 !important; /* Il colore di filler desiderato */
+    border-radius: 10px;
+    padding: 20px; /* Mantieni il padding per lo spazio interno */
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Per sicurezza, assicuriamoci che il wrapper esterno non abbia un background che lo copra.
+   Lo impostiamo su trasparente. */
+[data-testid="stVerticalBlockWrapper"] > [data-testid="stVerticalBlock"].st-key-user_info_container {
+    background-color: #faf7f0 !important; /* Ripetiamo il colore per massima sicurezza */
+}
+
+/* Selettore generico per il blocco verticale (container), ma specificando la key.
+   A volte Streamlit applica stili ad un div genitore più generale.
+   Questo cerca un div con un ID CSS generato che contenga la nostra chiave.
+   Questo è un tentativo più ampio se gli altri falliscono.
+*/
+div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
+    background-color: #faf7f0 !important;
+}
+
+/* Un selettore che mira a QUALSIASI div Streamlit che ha la tua key-class */
+.st-key-user-info-container {
+    background-color: #faf7f0 !important;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+</style>
+"""
+
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
     # Pagine                               11 / 34 + ?
         # - Log in ------------------------ ✅

@@ -50,15 +50,16 @@ def log_out():
     # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine
 
 def config_sidebar():
-    st.sidebar.image(image = "./img/SPIKKIO_gestionale.png")
+    st.sidebar.image(image = "./img/SPIKKIO_logo_2.png")
 
     st.sidebar.write("")    # spacing
 
     if st.session_state.logged:
 
-        with st.sidebar.container(border = True):
-            st.badge(f"{st.session_state.user}", icon = '👤', color = 'primary')
-            st.badge(f"{st.session_state.role}", color = 'primary')
+        st.markdown(c.custom_css, unsafe_allow_html = True)
+        with st.sidebar.container(key = 'user_info_container'):
+            st.subheader(f"👤 :primary[User:] {st.session_state.user}")
+            st.subheader(f"⚙️ :primary[Ruolo:] {st.session_state.role}")
 
         if st.session_state.role in c.users:
             pagine_per_utente = c.users[st.session_state.role]
