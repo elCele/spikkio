@@ -71,7 +71,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
 """
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
-    # Pagine                               11 / 34 + ?
+    # Pagine                               12 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌
