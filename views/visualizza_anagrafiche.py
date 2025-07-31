@@ -7,13 +7,6 @@ from sqlalchemy import text
 def show():
     st.title("🔍 Visualizza anagrafiche")
 
-    if "master" in st.session_state.role:
-        _anagrafiche = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE", st.session_state.engine)
-    else:
-        df_anagrafiche = pd.read_sql("SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE", st.session_state.engine)
-        df_anagrafiche = df_anagrafiche.drop(columns = ['Attivo'])
-
-
     with st.expander("Filtri", expanded = False):
         filter_CF_VS = st.text_input(label = "Codice fiscale", placeholder = "AAAAAA00A00A000A")
 
@@ -58,7 +51,6 @@ def show():
         with c2:
             filter_email_VS = st.text_input(label = "Email del socio")
 
-        query = "SELECT * FROM TBL_ANAGRAFICHE;"
         filters = []
         params = {}
 
@@ -114,9 +106,17 @@ def show():
         base_query = "SELECT * FROM TBL_ANAGRAFICHE"
 
         if filters:
-            query = base_query + " WHERE " + " AND ".join(filters)
+            if st.session_state.role == "master":
+                base_query = "SELECT * FROM TBL_ANAGRAFICHE WHERE"
+            else:
+                base_query = "SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE AND "
+
+            query = base_query + " AND ".join(filters)
         else:
-            query = base_query
+            if st.session_state.role == "master":
+                query = "SELECT * FROM TBL_ANAGRAFICHE"
+            else:
+                query = "SELECT * FROM TBL_ANAGRAFICHE WHERE Attivo = TRUE"
 
         df_anagrafiche = pd.read_sql(text(query), st.session_state.engine, params = params)
 

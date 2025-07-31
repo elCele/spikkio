@@ -14,7 +14,8 @@ from views import (
     gestisci_segnalazioni,
     crea_comunicazione,
     visualizza_attività,
-    crea_team
+    crea_team,
+    gestisci_utenze
 )
 
 f.initialize_var_batch_1()
@@ -41,7 +42,8 @@ PAGE_FUNCTIONS = {
     "Gestisci segnalazioni": gestisci_segnalazioni,
     "Crea comunicazione": crea_comunicazione,
     "Visualizza attività": visualizza_attività,
-    "Crea team": crea_team
+    "Crea team": crea_team,
+    "Gestisci utenze": gestisci_utenze
 }
 
 if PAGE_FUNCTIONS.get(st.session_state.current_page):
