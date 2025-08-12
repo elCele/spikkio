@@ -143,7 +143,7 @@ def show():
                 c1, c2 = st.columns(2)
 
                 with c1:
-                    st.button(label = "Sì", use_container_width = True, on_click = lambda: st.session_state.update(current_page = "Tesseramento"))
+                    st.button(label = "Sì", use_container_width = True, on_click = lambda: st.session_state.update(current_page = "Tesseramento socio"))
 
                 with c2:
                     st.button(label = "No", use_container_width = True, on_click = lambda: st.session_state.update(current_page = "Inserisci anagrafica"), type = "primary")
