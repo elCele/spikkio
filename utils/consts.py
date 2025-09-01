@@ -166,13 +166,7 @@ users = {
                 Pagina("Aggiungi membri", "➕", True),
                 Pagina("Visualizza membri", "🔍", True),
                 Pagina("Elimina membri", "➖", True)
-            ]),
-
-            Expander("Attività", "📅", True, [
-                Pagina("Crea attività", "➕", True),
-                Pagina("Visualizza attività", "🔍", True),
-                Pagina("Elimina attività", "➖", True)
-            ]),
+            ])
         ]),
 
         Expander("Profilo", "👤", False, [

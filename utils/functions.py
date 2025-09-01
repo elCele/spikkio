@@ -50,7 +50,7 @@ def log_out():
     # Ogni "pagina" avrà questa configurazione nella sidebar per la navigazione tra pagine
 
 def config_sidebar():
-    st.sidebar.image(image = "./img/SPIKKIO_logo_2.png")
+    st.sidebar.image(image = "./img/SPIKKIO_logo.png")
 
     st.sidebar.write("")    # spacing
 

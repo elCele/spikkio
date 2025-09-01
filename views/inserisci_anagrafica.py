@@ -48,7 +48,7 @@ def show():
             input_cellulare_IA = st.text_input(label = "Cellulare del socio", max_chars = 13, placeholder = "+000000000000")
 
         with c2:
-            input_email_IA = st.text_input(label = "Email del soci*", max_chars = 100)
+            input_email_IA = st.text_input(label = "Email del socio*", max_chars = 100)
 
         is_inserisci = st.form_submit_button(label = "Inserisci", use_container_width = True, icon = "➕")
 
@@ -130,9 +130,9 @@ def show():
 
             f.send_email(
                 "Registrazione a SPIKKIO!",
-                f"Benvenuto nella famiglia di SPIKKIO!\n\nEcco a te le tue credenziali:\n\n       👤 Username: {input_nome_IA}_{input_cognome_IA}\n      ✳️ Password: {input_CF_IA}",
+                f"Benvenuto nella famiglia di SPIKKIO!\n\nEcco a te le tue credenziali:\n\n      👤 Username: {input_nome_IA}_{input_cognome_IA}\n      ✳️ Password: {input_CF_IA}",
                 input_email_IA,
-                "mattia1052004@gmail.com",
+                st.secrets["EMAIL"],
                 st.secrets["EMAIL_PASSWORD"]
             )
 
