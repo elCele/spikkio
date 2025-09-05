@@ -77,6 +77,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # - Visualizza contributi --------- ❌
         # - Visualizza tessere ------------ ✅
         # - Visualizza team --------------- ❌
+        # - Visualizza il mio team -------- ❌
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌
         # - Effettua segnalazioni --------- ✅
@@ -159,7 +160,7 @@ users = {
         Pagina("Crea comunicazione", "📝", False),
 
         Expander("Il mio team", "🤝", False, [
-            Pagina("Visualizza team", "🔍", True),
+            Pagina("Visualizza il mio team", "🔍", True),
             Pagina("Modifica team", "🔧", True),
 
             Expander("Membri", "👥", True, [
