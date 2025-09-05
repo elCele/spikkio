@@ -84,7 +84,6 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # - Visualizza tessere ------------ 🟢
         # - Visualizza team --------------- 🟢
         # - Team -------------------------- 🟢 -- Copia di 📄[Visualizza team] con in aggiunta una lista dei membri
-        # - Visualizza attività ----------- 🟢
         # - Visualizza convocazioni ------- ⚫ -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
         # - Effettua segnalazioni --------- 🟢
         # - Cambia credenziali ------------ 🟢
@@ -203,7 +202,6 @@ users = {
 
         Expander("Attività", "📅", False, [
             Pagina("Crea attività", "➕", True),
-            Pagina("Visualizza attività", "🔍", True),
             Pagina("Elimina attività", "➖", True),
             Pagina("Visualizza iscrizioni", "📋", True)
         ]),
@@ -291,7 +289,6 @@ users = {
 
         Expander("Attività", "📅", False, [
             Pagina("Crea attività", "➕", True),
-            Pagina("Visualizza attività", "🔍", True),
             Pagina("Elimina attività", "➖", True),
             Pagina("Visualizza iscrizioni", "📋", True)
         ]),
