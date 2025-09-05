@@ -76,7 +76,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # - Bacheca ----------------------- ✅
         # - Visualizza contributi --------- ❌
         # - Visualizza tessere ------------ ✅
-        # - Visualizza team --------------- ❌
+        # - Visualizza team --------------- ✅
         # - Visualizza il mio team -------- ❌
         # - Visualizza attività ----------- ❌
         # - Visualizza convocazioni ------- ❌

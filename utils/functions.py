@@ -132,7 +132,7 @@ def send_email(subject, body, to_email, from_email, from_password, smtp_server =
 
 def build_tessera(nome_titolare, cognome_titolare, cf_titolare, data_scadenza, cod_tessera):
     sfondo_tessera_path = 'img/card_back.png'
-    logo_limone_path = 'img/SPIKKIO_logo.png'
+    logo_limone_path = 'img/SPIKKIO_logo_b.png'
 
     try:
         sfondo = Image.open(sfondo_tessera_path).convert("RGBA")
