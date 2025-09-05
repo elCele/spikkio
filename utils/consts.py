@@ -71,15 +71,21 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
 """
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
+    # Legenda
+        # 🟢 Completata
+        # 🟡 Iniziata
+        # 🔴 Da fare
+        # ⚫ Servono chiarimenti
+
     # Pagine                               13 / 35
         # - Log in ------------------------ 🟢
         # - Bacheca ----------------------- 🟢
-        # - Visualizza contributi --------- 🔴 -- Non esiste ancora la tabella contributi e non so bene cosa significhi
+        # - Visualizza contributi --------- ⚫ -- Non esiste ancora la tabella contributi e non so bene cosa significhi
         # - Visualizza tessere ------------ 🟢
         # - Visualizza team --------------- 🟢
         # - Visualizza il mio team -------- 🔴 -- Copia di 📄[Visualizza team] con in aggiunta una lista dei membri
         # - Visualizza attività ----------- 🟢
-        # - Visualizza convocazioni ------- 🔴 -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
+        # - Visualizza convocazioni ------- ⚫ -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
         # - Effettua segnalazioni --------- 🟢
         # - Cambia credenziali ------------ 🟢
         # - Modifica team ----------------- 🔴 -- Modifica delle info base del team
