@@ -71,7 +71,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
 """
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
-    # Pagine                               13 / 34 + ?
+    # Pagine                               13 / 35
         # - Log in ------------------------ 🟢
         # - Bacheca ----------------------- 🟢
         # - Visualizza contributi --------- 🔴 -- Non esiste ancora la tabella contributi e non so bene cosa significhi
