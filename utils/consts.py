@@ -77,7 +77,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # 🔴 Da fare
         # ⚫ Servono chiarimenti
 
-    # Pagine                               14 / 32
+    # Pagine                               14 / 31
         # - Log in ------------------------ 🟢
         # - Bacheca ----------------------- 🟢
         # - Visualizza contributi --------- ⚫ -- Non esiste ancora la tabella contributi e non so bene cosa significhi
@@ -88,7 +88,6 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # - Visualizza convocazioni ------- ⚫ -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
         # - Effettua segnalazioni --------- 🟢
         # - Cambia credenziali ------------ 🟢
-        # - Modifica team ----------------- 🔴 -- Modifica delle info base del team tranne il gestore
         # - Crea attività ----------------- 🟢
         # - Visualizza attività ----------- 🟢
         # - Elimina attività -------------- 🔴 -- Dropdown per selezionare l'attività da eliminare. Manda un'avviso sulla bacheca ad ogni iscritto all'attività
