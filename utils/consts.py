@@ -74,11 +74,11 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
     # Pagine                               13 / 34 + ?
         # - Log in ------------------------ ✅
         # - Bacheca ----------------------- ✅
-        # - Visualizza contributi --------- ❌
+        # - Visualizza contributi --------- ❌ -- Non esiste ancora la tabella contributi e non so bene cosa significhi
         # - Visualizza tessere ------------ ✅
         # - Visualizza team --------------- ✅
         # - Visualizza il mio team -------- ❌
-        # - Visualizza attività ----------- ❌
+        # - Visualizza attività ----------- ✅
         # - Visualizza convocazioni ------- ❌
         # - Effettua segnalazioni --------- ✅
         # - Cambia credenziali ------------ ✅
@@ -90,7 +90,7 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # - Crea attività ----------------- ✅
         # - Visualizza attività ----------- ✅
         # - Elimina attività -------------- ❌
-        # - Crea comunicazione ------------ ✅ da fare modifiche su chi può mandare comunicazioni a chi
+        # - Crea comunicazione ------------ ✅ -- Da fare modifiche su chi può mandare comunicazioni a chi
         # - Crea team --------------------- ✅
         # - Modifica teams ---------------- ❌
         # - Visualizza teams -------------- ❌

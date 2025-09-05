@@ -202,7 +202,7 @@ def build_tessera(nome_titolare, cognome_titolare, cf_titolare, data_scadenza, c
 
 # ------------------------ Creazione file .ics per inserire evento nel calendario ------------------------
 
-def genera_ics(nome_evento, descrizione, data_evento, ora_inizio, ora_fine, luogo="Luogo da definire"):
+def genera_ics(nome_evento, descrizione, data_evento, ora_inizio, ora_fine):
     tz = pytz.timezone('Europe/Rome')
     inizio = datetime.datetime.combine(data_evento, (datetime.datetime.min + ora_inizio).time())
     fine = datetime.datetime.combine(data_evento, (datetime.datetime.min + ora_fine).time())
@@ -216,7 +216,6 @@ def genera_ics(nome_evento, descrizione, data_evento, ora_inizio, ora_fine, luog
     event.add('description', descrizione)
     event.add('dtstart', inizio)
     event.add('dtend', fine)
-    event.add('location', luogo)
     event.add('dtstamp', datetime.datetime.now(tz=tz))
     cal.add_component(event)
 

@@ -101,9 +101,9 @@ def show():
 
                         st.rerun()
 
-                    if st.button('Aggiungi al calendario', icon='📆', use_container_width=True, key=f"{a['Denominazione']} - calendar"):
-                        ics_file = f.genera_ics(a)
-                        st.download_button("Scarica .ics", data=ics_file, file_name=f"{a['Denominazione']}.ics")
+                    ics_file = f.genera_ics(a['Denominazione'], a['Descrizione'], a['Data'], a['Ora_inizio'], a['Ora_fine'])
+
+                    st.download_button('Aggiungi al calendario', data = ics_file, file_name = f"{a['Denominazione']}.ics", icon='📆', use_container_width=True, key=f"{a['Denominazione']} - calendar")
 
                 elif max_partecipanti is None or pd.isna(max_partecipanti) or num_prenotazioni < max_partecipanti:
                     prenota = st.button('Prenota', use_container_width=True, key=f"{a['Denominazione']} - prenota")
