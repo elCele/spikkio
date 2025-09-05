@@ -72,41 +72,41 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
 
 # ------------------------ Gestione tipi di pagine per tutti gli utenti ------------------------
     # Pagine                               13 / 34 + ?
-        # - Log in ------------------------ ✅
-        # - Bacheca ----------------------- ✅
-        # - Visualizza contributi --------- ❌ -- Non esiste ancora la tabella contributi e non so bene cosa significhi
-        # - Visualizza tessere ------------ ✅
-        # - Visualizza team --------------- ✅
-        # - Visualizza il mio team -------- ❌
-        # - Visualizza attività ----------- ✅
-        # - Visualizza convocazioni ------- ❌
-        # - Effettua segnalazioni --------- ✅
-        # - Cambia credenziali ------------ ✅
-        # - Visualizza team --------------- ❌
-        # - Modifica team ----------------- ❌
-        # - Aggiungi membri --------------- ❌
-        # - Visualizza membri ------------- ❌
-        # - Elimina membri ---------------- ❌
-        # - Crea attività ----------------- ✅
-        # - Visualizza attività ----------- ✅
-        # - Elimina attività -------------- ❌
-        # - Crea comunicazione ------------ ✅ -- Da fare modifiche su chi può mandare comunicazioni a chi
-        # - Crea team --------------------- ✅
-        # - Modifica teams ---------------- ❌
-        # - Visualizza teams -------------- ❌
-        # - Disattiva team ---------------- ❌
-        # - Visualizza iscrizioni --------- ❌
-        # - Aggiungi ente ----------------- ❌
-        # - Visualizza enti --------------- ❌
-        # - Crea affiliazione ------------- ❌
-        # - Visualizza affiliazioni ------- ❌
-        # - Inserisci anagrafica ---------- ✅
-        # - Visualizza anagrafiche -------- ✅
-        # - Tesseramento socio ------------ ❌
-        # - Crea tessera ------------------ ❌
-        # - Visualizza tessere ------------ ❌
-        # - Gestisci utenze --------------- ❌
-        # - Gestisci segnalazioni --------- ✅
+        # - Log in ------------------------ 🟢
+        # - Bacheca ----------------------- 🟢
+        # - Visualizza contributi --------- 🔴 -- Non esiste ancora la tabella contributi e non so bene cosa significhi
+        # - Visualizza tessere ------------ 🟢
+        # - Visualizza team --------------- 🟢
+        # - Visualizza il mio team -------- 🔴 -- Copia di 📄[Visualizza team] con in aggiunta una lista dei membri
+        # - Visualizza attività ----------- 🟢
+        # - Visualizza convocazioni ------- 🔴 -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
+        # - Effettua segnalazioni --------- 🟢
+        # - Cambia credenziali ------------ 🟢
+        # - Modifica team ----------------- 🔴 -- Modifica delle info base del team
+        # - Aggiungi membri --------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
+        # - Visualizza membri ------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
+        # - Elimina membri ---------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
+        # - Crea attività ----------------- 🟢
+        # - Visualizza attività ----------- 🟢
+        # - Elimina attività -------------- 🔴 -- Dropdown per selezionare l'attività da eliminare. Manda un'avviso sulla bacheca ad ogni iscritto all'attività
+        # - Crea comunicazione ------------ 🟢 -- Da fare modifiche su chi può mandare comunicazioni a chi
+        # - Crea team --------------------- 🟢
+        # - Modifica teams ---------------- 🔴 -- Modifica delle info base di ogni team e possibilità di aggiornamento del responsabile
+        # - Visualizza teams -------------- 🔴 -- Copia di 📄[Visualizza team] ma con tutti i team
+        # - Disattiva team ---------------- 🔴 -- Inserie la pagina in 📄[Modifica teams]
+        # - Visualizza iscrizioni --------- 🔴 -- Fare un expander per ogni attività e metterci la lista dei partecipanti
+        # - Aggiungi ente ----------------- 🔴 -- Inserimento dell'ente nel DB
+        # - Visualizza enti --------------- 🔴 -- Lista di tutti gli enti con ricerca
+        # - Crea affiliazione ------------- 🔴 -- Inserimento dell'affiliazione nel DB
+        # - Visualizza affiliazioni ------- 🔴 -- Lista di tutte le affiliazioni con ricerca
+        # - Inserisci anagrafica ---------- 🟢
+        # - Visualizza anagrafiche -------- 🟢
+        # - Tesseramento socio ------------ 🔴 -- Capire bene per la questione pagamento o meno. Inserimento del tesseramento del DB
+        # - Crea tessera ------------------ 🔴 -- Inserimento del nuovo tipo di tessera nel DB
+        # - Visualizza tessere ------------ 🟡 -- Aggiornare layout tessera con il nuovo logo
+        # - Visualizza tipi tessere ------- 🔴 -- Visualizzare tutte le tipologie di tessere e le varie caratteristiche
+        # - Gestisci utenze --------------- 🟡 -- Finire di mettere tutti i campi del DB e aggiungere una ricerca
+        # - Gestisci segnalazioni --------- 🟡 -- Non lasciare la pagina vuota nel caso non ci siano segnalazioni
 
 class Pagina:
     def __init__(self, nome, icona, in_expander):
@@ -249,7 +249,7 @@ users = {
         Expander("Tessere", "🔗", True, [
             Pagina("Tesseramento socio", "🪪", True),
             Pagina("Crea tessera", "➕", True),
-            Pagina("Visualizza tessere", "🔍", True)
+            Pagina("Visualizza tipi tessere", "🔍", True)
         ]),
 
         Expander("Profilo", "👤", False, [
