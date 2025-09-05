@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import sqlalchemy
 from sqlalchemy import text
 
 def show():
@@ -48,30 +49,79 @@ def show():
     non_membri = ['']
     non_membri = non_membri + (df_non_membri["CF"] + "  - " + df_non_membri["Nome"] + " " + df_non_membri["Cognome"]).tolist()
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2, border = True)
 
     with col1:
-        st.subheader("Progetti")
-        i_col1, i_col2 = st.columns(2)
-        cols = [i_col1, i_col2]
-        i = 0
+        st.subheader("Modifica")
 
-        for _, p in df_progetti.iterrows():
-            with cols[i]:
-                with st.container(border = True):
-                    st.subheader(f"📂 {p['Nome']}")
-                    st.write(p['Descrizione'])
-                    if pd.isna(p['Data_fine']) and pd.isna(p['Deadline']):
-                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} - ...]")
-                    elif pd.isna(p['Data_fine']) and not pd.isna(p['Deadline']):
-                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} -] :red[{p['Deadline'].strftime('%d-%m-%Y')}]")
-                    else:
-                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} - {p['Data_fine'].strftime('%d-%m-%Y')}]")
+        with st.form("form_modifica_nome_team", clear_on_submit = True, enter_to_submit = False, border = False):
+            i_col1, i_col2 = st.columns([0.7, 0.3], vertical_alignment = 'bottom')
 
-            if i == 1:
-                i = 0
-            else:
-                i += 1
+            with i_col1:
+                input_nome = st.text_input("Nuovo nome", max_chars = 100)
+
+            with i_col2:
+                submitted = st.form_submit_button("Modifica nome", use_container_width = True)
+
+            if submitted:
+                err = []
+
+                if input_nome == '':
+                    err.append('Il nuovo nome non può essere vuoto.')
+
+                if err:
+                    for e in err:
+                        st.error(e, icon = '🚨')
+                else:
+                    query = text('''UPDATE TBL_TEAM
+                                    SET Nome = :nuovo_nome
+                                    WHERE Nome = :vecchio_nome
+                                    ''')
+                    try:
+                        with st.session_state.engine.connect() as conn:
+                            conn.execute(query, {
+                                "nuovo_nome": input_nome,
+                                "vecchio_nome": df_team['Nome'][0]
+                            })
+
+                            conn.commit()
+
+                        st.rerun()
+                    except sqlalchemy.exc.IntegrityError:
+                        st.error("Esiste già un team con questo nome.", icon = '🚨')
+
+        with st.form("form_modifica_desc_team", clear_on_submit = True, enter_to_submit = False, border = False):
+            i_col1, i_col2 = st.columns([0.7, 0.3], vertical_alignment = 'center')
+
+            with i_col1:
+                input_descrizione = st.text_area("Nuova descrizione", height = 150)
+
+            with i_col2:
+                submitted = st.form_submit_button("Modifica descrizione", use_container_width = True)
+
+            if submitted:
+                err = []
+
+                if input_descrizione == '':
+                    err.append('La nuova descrizione non può essere vuota.')
+
+                if err:
+                    for e in err:
+                        st.error(e, icon = '🚨')
+                else:
+                    query = text('''UPDATE TBL_TEAM
+                                    SET Descrizione = :nuova_desc
+                                    WHERE Nome = :nome
+                                    ''')
+                    with st.session_state.engine.connect() as conn:
+                        conn.execute(query, {
+                            "nuova_desc": input_descrizione,
+                            "nome": df_team['Nome'][0]
+                        })
+
+                        conn.commit()
+
+                    st.rerun()
 
     with col2:
         st.subheader("Membri")
@@ -101,7 +151,8 @@ def show():
                         conn.commit()
 
                     st.rerun()
-        with st.container(border = True):
+
+        with st.container(height = 255, border = False):
             for _, m in df_membri.iterrows():
                 with st.container(border = True):
                     i_col1, i_col2, i_col3 = st.columns([0.1, 0.6, 0.3], vertical_alignment = 'center')
@@ -125,3 +176,26 @@ def show():
                                 conn.commit()
 
                             st.rerun()
+
+    with st.container(border = True, height = 825):
+        st.subheader("Progetti")
+        i_col1, i_col2, i_col3 = st.columns(3)
+        cols = [i_col1, i_col2, i_col3]
+        i = 0
+
+        for _, p in df_progetti.iterrows():
+            with cols[i]:
+                with st.container(border = True):
+                    st.subheader(f"📂 {p['Nome']}")
+                    st.write(p['Descrizione'])
+                    if pd.isna(p['Data_fine']) and pd.isna(p['Deadline']):
+                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} - ...]")
+                    elif pd.isna(p['Data_fine']) and not pd.isna(p['Deadline']):
+                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} -] :red[{p['Deadline'].strftime('%d-%m-%Y')}]")
+                    else:
+                        st.write(f":gray[{p['Data_inizio'].strftime('%d-%m-%Y')} - {p['Data_fine'].strftime('%d-%m-%Y')}]")
+
+            if i == 2:
+                i = 0
+            else:
+                i += 1
