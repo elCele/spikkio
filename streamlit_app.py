@@ -7,6 +7,7 @@ from views import (
     cambia_credenziali,
     bacheca,
     inserisci_anagrafica,
+    team,
     visualizza_anagrafiche,
     visualizza_tessere,
     crea_attività,
@@ -45,7 +46,8 @@ PAGE_FUNCTIONS = {
     "Visualizza attività": visualizza_attività,
     "Crea team": crea_team,
     "Gestisci utenze": gestisci_utenze,
-    "Visualizza team": visualizza_team
+    "Visualizza team": visualizza_team,
+    "Il mio team": team
 }
 
 if PAGE_FUNCTIONS.get(st.session_state.current_page):

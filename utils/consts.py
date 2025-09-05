@@ -77,25 +77,22 @@ div[data-testid^="stVerticalBlock"] > .st-key-user-info-container {
         # 🔴 Da fare
         # ⚫ Servono chiarimenti
 
-    # Pagine                               13 / 35
+    # Pagine                               14 / 32
         # - Log in ------------------------ 🟢
         # - Bacheca ----------------------- 🟢
         # - Visualizza contributi --------- ⚫ -- Non esiste ancora la tabella contributi e non so bene cosa significhi
         # - Visualizza tessere ------------ 🟢
         # - Visualizza team --------------- 🟢
-        # - Visualizza il mio team -------- 🔴 -- Copia di 📄[Visualizza team] con in aggiunta una lista dei membri
+        # - Team -------------------------- 🟢 -- Copia di 📄[Visualizza team] con in aggiunta una lista dei membri
         # - Visualizza attività ----------- 🟢
         # - Visualizza convocazioni ------- ⚫ -- Da definire bene quando e come fare le convocazioni e cosa sono in generale
         # - Effettua segnalazioni --------- 🟢
         # - Cambia credenziali ------------ 🟢
-        # - Modifica team ----------------- 🔴 -- Modifica delle info base del team
-        # - Aggiungi membri --------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
-        # - Visualizza membri ------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
-        # - Elimina membri ---------------- 🔴 -- Pensare se unire questa pagina in 📄[Visualizza il mio team] o creare pagina 📄[Gestione membri]
+        # - Modifica team ----------------- 🔴 -- Modifica delle info base del team tranne il gestore
         # - Crea attività ----------------- 🟢
         # - Visualizza attività ----------- 🟢
         # - Elimina attività -------------- 🔴 -- Dropdown per selezionare l'attività da eliminare. Manda un'avviso sulla bacheca ad ogni iscritto all'attività
-        # - Crea comunicazione ------------ 🟢 -- Da fare modifiche su chi può mandare comunicazioni a chi
+        # - Crea comunicazione ------------ 🟡 -- Da fare modifiche su chi può mandare comunicazioni a chi
         # - Crea team --------------------- 🟢
         # - Modifica teams ---------------- 🔴 -- Modifica delle info base di ogni team e possibilità di aggiornamento del responsabile
         # - Visualizza teams -------------- 🔴 -- Copia di 📄[Visualizza team] ma con tutti i team
@@ -165,16 +162,8 @@ users = {
         Pagina("Bacheca", "📌", False),
         Pagina("Crea comunicazione", "📝", False),
 
-        Expander("Il mio team", "🤝", False, [
-            Pagina("Visualizza il mio team", "🔍", True),
-            Pagina("Modifica team", "🔧", True),
-
-            Expander("Membri", "👥", True, [
-                Pagina("Aggiungi membri", "➕", True),
-                Pagina("Visualizza membri", "🔍", True),
-                Pagina("Elimina membri", "➖", True)
-            ])
-        ]),
+        Pagina("Il mio team", "🔍", False),
+        Pagina("Modifica team", "🔧", False),
 
         Expander("Profilo", "👤", False, [
             Pagina("Visualizza contributi", "📊", True),
