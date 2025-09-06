@@ -4,7 +4,7 @@ import bcrypt
 from sqlalchemy import text
 
 def show():
-    utenti = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
+    utenti = pd.read_sql("SELECT * FROM tbl_utenti", st.session_state.engine)
 
     st.title("🔑 Login")
 
