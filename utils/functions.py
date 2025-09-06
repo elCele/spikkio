@@ -18,7 +18,7 @@ import datetime
 # ------------------------ Inizializzazione variabili di stato ------------------------
 
 ss_variables_b1 = {
-    "engine": create_engine(f"mysql+mysqlconnector://{st.secrets['DB_USERNAME']}:@192.168.1.113:3306/spikkio"),
+    "engine": create_engine(f"mysql+mysqlconnector://{st.secrets['DB_USERNAME']}:{st.secrets['DB_PASSWORD']}@5.tcp.eu.ngrok.io:11605/spikkio"),
     "current_page": "Log in",
     "logged": False,
     "user": "",
