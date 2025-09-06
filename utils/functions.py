@@ -34,7 +34,7 @@ def initialize_var_batch_1():
 
 def initialize_var_batch_2():
     if "users" not in st.session_state:
-        st.session_state["users"] = pd.read_sql("SELECT * FROM tbl_utenti", st.session_state.engine)
+        st.session_state["users"] = pd.read_sql("SELECT * FROM TBL_UTENTI", st.session_state.engine)
 
 # ------------------------ Log out ------------------------
 
